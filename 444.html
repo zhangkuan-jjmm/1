@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语塔防冒险：守护者</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1A2B63, #0A1232);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% {opacity: 0.2;}
+            100% {opacity: 1;}
+        }
+        
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+            animation: shoot 4s linear infinite;
+            transform: rotate(-45deg);
+            opacity: 0;
+        }
+        
+        @keyframes shoot {
+            0% {transform: translateX(-100px) translateY(0) rotate(-45deg); opacity: 0;}
+            10% {opacity: 1;}
+            20% {transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) rotate(-45deg); opacity: 0;}
+            100% {opacity: 0;}
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            background-color: rgba(26, 43, 99, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .game-title {
+            margin: 25px 0;
+            font-size: 28px;
+            font-weight: bold;
+            color: transparent;
+            background: linear-gradient(to bottom, #FFDF00, #FFA500);
+            background-clip: text;
+            -webkit-background-clip: text;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% {transform: scale(1);}
+            100% {transform: scale(1.05);}
+        }
+        
+        .logo-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {transform: translateY(0px);}
+            50% {transform: translateY(-10px);}
+            100% {transform: translateY(0px);}
+        }
+        
+        .castle {
+            width: 120px;
+            height: 140px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .castle-base {
+            width: 100%;
+            height: 80px;
+            background-color: #8B5A2B;
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            bottom: 0;
+        }
+        
+        .castle-top {
+            width: 140px;
+            height: 30px;
+            background-color: #B8860B;
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            bottom: 80px;
+            left: -10px;
+        }
+        
+        .tower {
+            width: 20px;
+            height: 50px;
+            background-color: #8B5A2B;
+            border-radius: 5px 5px 0 0;
+            position: absolute;
+            top: -50px;
+        }
+        
+        .tower-left {
+            left: 15px;
+        }
+        
+        .tower-right {
+            right: 15px;
+        }
+        
+        .tower-middle {
+            width: 30px;
+            height: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -70px;
+        }
+        
+        .tower-top {
+            width: 100%;
+            height: 10px;
+            background-color: #B8860B;
+            border-radius: 5px 5px 0 0;
+            position: absolute;
+            top: 0;
+        }
+        
+        .magic-circle {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 2px solid rgba(199, 125, 255, 0.5);
+            top: 10px;
+            left: 10px;
+            animation: rotate 10s linear infinite;
+        }
+        
+        .letters {
+            position: absolute;
+            color: #C77DFF;
+            font-weight: bold;
+            font-size: 16px;
+            animation: float-letter 5s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% {transform: rotate(0deg);}
+            100% {transform: rotate(360deg);}
+        }
+        
+        @keyframes float-letter {
+            0% {transform: translateY(0);}
+            50% {transform: translateY(-10px);}
+            100% {transform: translateY(0);}
+        }
+        
+        .hero {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        
+        .hero-body {
+            width: 30px;
+            height: 30px;
+            background-color: #FF9A3A;
+            border-radius: 50%;
+            position: absolute;
+            top: 15px;
+            left: 5px;
+        }
+        
+        .hero-head {
+            width: 20px;
+            height: 20px;
+            background-color: #FFD3A5;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 10px;
+        }
+        
+        .hero-arm {
+            width: 10px;
+            height: 25px;
+            background-color: #FF9A3A;
+            position: absolute;
+            top: 20px;
+            transform-origin: top;
+        }
+        
+        .hero-arm-left {
+            left: 0;
+            transform: rotate(30deg);
+            animation: cast-spell 3s infinite;
+        }
+        
+        .hero-arm-right {
+            right: 0;
+            transform: rotate(-30deg);
+        }
+        
+        .hero-leg {
+            width: 10px;
+            height: 20px;
+            background-color: #3A8DFF;
+            position: absolute;
+            bottom: 0;
+        }
+        
+        .hero-leg-left {
+            left: 8px;
+        }
+        
+        .hero-leg-right {
+            right: 8px;
+        }
+        
+        .wand {
+            position: absolute;
+            width: 5px;
+            height: 20px;
+            background-color: #8B4513;
+            top: -15px;
+            left: 3px;
+            transform-origin: bottom;
+            transform: rotate(-45deg);
+        }
+        
+        .wand-tip {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #FFDF00;
+            border-radius: 50%;
+            top: -8px;
+            left: -1.5px;
+            box-shadow: 0 0 10px #FFDF00;
+            animation: glow 1.5s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% {opacity: 0.5; box-shadow: 0 0 5px #FFDF00;}
+            100% {opacity: 1; box-shadow: 0 0 15px #FFDF00;}
+        }
+        
+        @keyframes cast-spell {
+            0%, 100% {transform: rotate(30deg);}
+            50% {transform: rotate(45deg);}
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 25px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(to right, #4CD964, #3A8DFF);
+            border-radius: 10px;
+            position: relative;
+            animation: progress-wave 2s linear infinite, loading 10s forwards;
+        }
+        
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            animation: shimmer 2s linear infinite;
+        }
+        
+        @keyframes progress-wave {
+            0% {background-position: 0 0;}
+            100% {background-position: 50px 0;}
+        }
+        
+        @keyframes shimmer {
+            0% {transform: translateX(-100%);}
+            100% {transform: translateX(100%);}
+        }
+        
+        @keyframes loading {
+            0% {width: 10%;}
+            20% {width: 25%;}
+            50% {width: 55%;}
+            80% {width: 75%;}
+            100% {width: 100%;}
+        }
+        
+        .loading-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 1;
+            color: white;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+        }
+        
+        .tip-message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: white;
+            opacity: 0.9;
+            animation: fade 5s infinite;
+            min-height: 20px;
+        }
+        
+        @keyframes fade {
+            0%, 100% {opacity: 0.7;}
+            50% {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="shooting-star" id="shootingStar"></div>
+    
+    <div class="container">
+        <div class="logo-container">
+            <div class="magic-circle"></div>
+            <div class="castle">
+                <div class="castle-top"></div>
+                <div class="castle-base"></div>
+                <div class="tower tower-left">
+                    <div class="tower-top"></div>
+                </div>
+                <div class="tower tower-middle">
+                    <div class="tower-top"></div>
+                </div>
+                <div class="tower tower-right">
+                    <div class="tower-top"></div>
+                </div>
+            </div>
+            
+            <div class="hero">
+                <div class="hero-head"></div>
+                <div class="hero-body"></div>
+                <div class="hero-arm hero-arm-left">
+                    <div class="wand">
+                        <div class="wand-tip"></div>
+                    </div>
+                </div>
+                <div class="hero-arm hero-arm-right"></div>
+                <div class="hero-leg hero-leg-left"></div>
+                <div class="hero-leg hero-leg-right"></div>
+            </div>
+            
+            <div class="letters" style="top: 30px; left: 40px;">A</div>
+            <div class="letters" style="top: 60px; left: 160px;">B</div>
+            <div class="letters" style="top: 130px; left: 20px;">C</div>
+            <div class="letters" style="top: 150px; left: 150px;">Z</div>
+        </div>
+        
+        <h1 class="game-title">英语塔防冒险：守护者</h1>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+            <div class="loading-percent">加载中... <span id="percent">65</span>%</div>
+        </div>
+        
+        <div class="tip-message" id="tipMessage">提示：读准单词，获得能量！</div>
+    </div>
+
+    <script>
+        // 创建星星背景
+        const stars = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            stars.appendChild(star);
+        }
+        
+        // 流星动画
+        const shootingStar = document.getElementById('shootingStar');
+        function moveShootingStar() {
+            shootingStar.style.top = Math.random() * 30 + '%';
+            shootingStar.style.left = Math.random() * 50 + '%';
+            shootingStar.style.opacity = '0';
+            
+            setTimeout(() => {
+                shootingStar.style.animation = 'none';
+                shootingStar.offsetHeight; // 重置动画
+                shootingStar.style.animation = 'shoot 4s linear';
+            }, 100);
+            
+            setTimeout(moveShootingStar, 5000);
+        }
+        moveShootingStar();
+        
+        // 随机提示信息
+        const tips = [
+            "提示：读准单词，获得能量！",
+            "提示：能量耗尽会降低移动速度！",
+            "提示：击败怪物可以获得金币！",
+            "提示：通关后可以升级技能！",
+            "提示：单词越难，获得的能量越多！"
+        ];
+        
+        const tipMessage = document.getElementById('tipMessage');
+        let tipIndex = 0;
+        
+        function changeTip() {
+            tipMessage.style.opacity = 0;
+            
+            setTimeout(() => {
+                tipIndex = (tipIndex + 1) % tips.length;
+                tipMessage.textContent = tips[tipIndex];
+                tipMessage.style.opacity = 1;
+            }, 500);
+            
+            setTimeout(changeTip, 5000);
+        }
+        setTimeout(changeTip, 5000);
+        
+        // 模拟加载进度
+        const percentEl = document.getElementById('percent');
+        let percent = 65;
+        
+        function updatePercent() {
+            if (percent < 100) {
+                percent += Math.floor(Math.random() * 3) + 1;
+                if (percent > 100) percent = 100;
+                percentEl.textContent = percent;
+                
+                const delay = Math.random() * 500 + 200;
+                setTimeout(updatePercent, delay);
+            } else {
+                setTimeout(() => {
+                    document.querySelector('.loading-percent').textContent = '加载完成!';
+                    // 这里可以添加加载完成后的操作，比如跳转到主界面
+                }, 500);
+            }
+        }
+        setTimeout(updatePercent, 1000);
+    </script>
+</body>
+</html>

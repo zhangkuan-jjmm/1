@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语冒险岛 - 小学生英语学习游戏</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Baloo 2', cursive;
+        }
+        .game-perspective {
+            perspective: 1000px;
+        }
+        .game-floor {
+            transform: rotateX(60deg);
+            transform-style: preserve-3d;
+        }
+        .game-character {
+            transform: translateZ(20px);
+        }
+        .game-object {
+            transform-style: preserve-3d;
+        }
+        .game-shadow {
+            transform: rotateX(90deg) translateZ(-10px);
+        }
+        .joystick-base {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+        .joystick-handle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-blue-100 p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8">英语冒险岛 UI/UX 设计预览</h1>
+        
+        <!-- 页面预览容器 -->
+        <div class="flex flex-wrap gap-6 justify-center">
+            
+            <!-- 登录页面 -->
+            <div class="w-80 h-[600px] bg-white rounded-3xl shadow-lg overflow-hidden border-4 border-indigo-300">
+                <div class="h-8 bg-indigo-200 flex items-center px-4">
+                    <div class="w-3 h-3 rounded-full bg-red-400 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+                    <p class="text-xs text-gray-600 mx-auto">登录页面</p>
+                </div>
+                <div class="p-4 h-[calc(100%-2rem)] flex flex-col">
+                    <!-- 游戏标题和LOGO -->
+                    <div class="text-center my-6">
+                        <div class="w-32 h-32 rounded-full bg-yellow-400 mx-auto flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&q=80&w=2070" alt="游戏Logo" class="w-28 h-28 object-cover rounded-full">
+                        </div>
+                        <h1 class="text-3xl font-bold text-indigo-600 mt-4">英语冒险岛</h1>
+                        <p class="text-gray-500">开启英语探险之旅！</p>
+                    </div>
+                    
+                    <!-- 登录表单 -->
+                    <div class="bg-indigo-50 p-5 rounded-2xl mt-4">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-indigo-700 mb-1">用户名</label>
+                            <input type="text" class="w-full px-4 py-2 rounded-xl border-2 border-indigo-200 focus:border-indigo-400 focus:outline-none" placeholder="输入你的昵称">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-indigo-700 mb-1">密码</label>
+                            <input type="password" class="w-full px-4 py-2 rounded-xl border-2 border-indigo-200 focus:border-indigo-400 focus:outline-none" placeholder="输入密码">
+                        </div>
+                        <button class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-bold mt-2 transition">登录</button>
+                        <div class="text-center mt-3">
+                            <a href="#" class="text-indigo-500 text-sm">没有账号？立即注册</a>
+                        </div>
+                    </div>
+                    
+                    <!-- 家长入口 -->
+                    <div class="mt-auto pb-4 text-center">
+                        <a href="#" class="text-gray-500 text-sm">家长监督入口</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 主界面 -->
+            <div class="w-80 h-[600px] bg-white rounded-3xl shadow-lg overflow-hidden border-4 border-indigo-300">
+                <div class="h-8 bg-indigo-200 flex items-center px-4">
+                    <div class="w-3 h-3 rounded-full bg-red-400 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+                    <p class="text-xs text-gray-600 mx-auto">主界面</p>
+                </div>
+                <div class="p-4 h-[calc(100%-2rem)] bg-gradient-to-b from-sky-100 to-indigo-100 flex flex-col">
+                    <!-- 顶部信息栏 -->
+                    <div class="flex justify-between items-center">
+                        <!-- 玩家信息 -->
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-orange-400 flex items-center justify-center border-2 border-white">
+                                <img src="https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?auto=format&fit=crop&q=80&w=2070" alt="玩家头像" class="w-10 h-10 rounded-full object-cover">
+                            </div>
+                            <div class="ml-2">
+                                <p class="font-bold text-indigo-700">小冒险家</p>
+                                <div class="flex items-center">
+                                    <span class="text-xs text-yellow-700">Lv.3</span>
+                                    <div class="w-16 h-2 bg-gray-200 rounded-full ml-1">
+                                        <div class="w-8 h-2 bg-yellow-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 游戏资源 -->
+                        <div class="flex gap-2">
+                            <div class="bg-yellow-100 rounded-lg px-2 py-1 flex items-center">
+                                <span class="text-yellow-700">⭐</span>
+                                <span class="ml-1 text-sm font-bold">128</span>
+                            </div>
+                            <div class="bg-blue-100 rounded-lg px-2 py-1 flex items-center">
+                                <span class="text-blue-700">💎</span>
+                                <span class="ml-1 text-sm font-bold">35</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 游戏主要功能区 -->
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <!-- 冒险模式 -->
+                        <div class="bg-green-100 rounded-2xl p-3 shadow-md h-32 flex flex-col justify-between transform hover:scale-105 transition">
+                            <img src="https://images.unsplash.com/photo-1536349788264-1b816db3cc13?auto=format&fit=crop&q=80&w=2068" alt="冒险模式" class="w-16 h-16 mx-auto rounded-xl object-cover">
+                            <p class="text-center font-bold text-green-700">冒险模式</p>
+                        </div>
+                        
+                        <!-- 挑战模式 -->
+                        <div class="bg-red-100 rounded-2xl p-3 shadow-md h-32 flex flex-col justify-between transform hover:scale-105 transition">
+                            <img src="https://images.unsplash.com/photo-1605106702734-205df224ecce?auto=format&fit=crop&q=80&w=2070" alt="挑战模式" class="w-16 h-16 mx-auto rounded-xl object-cover">
+                            <p class="text-center font-bold text-red-700">挑战模式</p>
+        </div>
+        
+                        <!-- 背包装备 -->
+                        <div class="bg-purple-100 rounded-2xl p-3 shadow-md h-32 flex flex-col justify-between transform hover:scale-105 transition">
+                            <img src="https://images.unsplash.com/photo-1618331833071-ce81bd50d300?auto=format&fit=crop&q=80&w=2069" alt="背包装备" class="w-16 h-16 mx-auto rounded-xl object-cover">
+                            <p class="text-center font-bold text-purple-700">背包装备</p>
+            </div>
+            
+                        <!-- 学习成就 -->
+                        <div class="bg-blue-100 rounded-2xl p-3 shadow-md h-32 flex flex-col justify-between transform hover:scale-105 transition">
+                            <img src="https://images.unsplash.com/photo-1535982368253-05ab3018a560?auto=format&fit=crop&q=80&w=2419" alt="学习成就" class="w-16 h-16 mx-auto rounded-xl object-cover">
+                            <p class="text-center font-bold text-blue-700">学习成就</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 每日任务 -->
+                    <div class="mt-6 bg-white rounded-2xl p-4 shadow-md">
+                        <h2 class="font-bold text-gray-700 mb-2">今日任务</h2>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-2">
+                                        <span class="text-green-600 text-xs">A</span>
+                                    </div>
+                                    <span class="text-sm">学习5个新单词</span>
+                                </div>
+                                <div class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-lg">2/5</div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-2">
+                                        <span class="text-blue-600 text-xs">B</span>
+                                    </div>
+                                    <span class="text-sm">完成1次对话练习</span>
+                                </div>
+                                <div class="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-lg">0/1</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部导航栏 -->
+                    <div class="mt-auto pt-4">
+                        <div class="bg-white rounded-2xl flex justify-around py-3 shadow-lg">
+                            <button class="text-indigo-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                            </button>
+                            <button class="text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </button>
+                            <button class="text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                            </button>
+                            <button class="text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 游戏玩法页面（3D横屏游戏） -->
+            <div class="w-[600px] h-[300px] bg-white rounded-3xl shadow-lg overflow-hidden border-4 border-indigo-300">
+                <div class="h-8 bg-indigo-200 flex items-center px-4">
+                    <div class="w-3 h-3 rounded-full bg-red-400 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400 mr-2"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+                    <p class="text-xs text-gray-600 mx-auto">游戏玩法页面（横屏3D）</p>
+                </div>
+                <div class="h-[calc(100%-2rem)] relative overflow-hidden game-perspective">
+                    <!-- 游戏背景和场景 -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-sky-300 to-cyan-500">
+                        <!-- 远景山脉 -->
+                        <div class="absolute bottom-[40%] left-0 right-0 h-32">
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=2070" 
+                                class="w-full h-full object-cover opacity-60" alt="远景山脉">
+                        </div>
+                        
+                        <!-- 云朵 -->
+                        <div class="absolute top-[10%] left-[10%] w-20 h-10 bg-white rounded-full opacity-70"></div>
+                        <div class="absolute top-[15%] left-[15%] w-24 h-12 bg-white rounded-full opacity-80"></div>
+                        <div class="absolute top-[8%] left-[30%] w-16 h-8 bg-white rounded-full opacity-60"></div>
+                        <div class="absolute top-[12%] right-[20%] w-20 h-10 bg-white rounded-full opacity-70"></div>
+                        <div class="absolute top-[5%] right-[10%] w-16 h-8 bg-white rounded-full opacity-80"></div>
+                    </div>
+                    
+                    <!-- 游戏地板（3D视角） -->
+                    <div class="absolute inset-x-0 bottom-0 h-[60%] game-floor">
+                        <!-- 草地地形 -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-green-400 to-green-600">
+                            <!-- 装饰物：小草和花朵 -->
+                            <div class="absolute top-[20%] left-[30%] w-4 h-5 bg-green-300 rounded-t-full"></div>
+                            <div class="absolute top-[15%] left-[35%] w-3 h-4 bg-green-300 rounded-t-full"></div>
+                            <div class="absolute top-[40%] left-[60%] w-4 h-5 bg-green-300 rounded-t-full"></div>
+                            <div class="absolute top-[30%] right-[25%] w-6 h-6 rounded-full flex items-center justify-center">
+                                <div class="w-3 h-3 bg-yellow-300 rounded-full"></div>
+                                <div class="absolute w-2 h-2 bg-yellow-400 rounded-full top-0"></div>
+                                <div class="absolute w-2 h-2 bg-yellow-400 rounded-full bottom-0"></div>
+                                <div class="absolute w-2 h-2 bg-yellow-400 rounded-full left-0"></div>
+                                <div class="absolute w-2 h-2 bg-yellow-400 rounded-full right-0"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 路径 -->
+                        <div class="absolute top-[20%] bottom-[20%] left-[10%] right-[10%] bg-yellow-200 rounded-full opacity-80"></div>
+                        
+                        <!-- 障碍物和交互元素 -->
+                        <div class="absolute top-[30%] left-[20%] w-16 h-16 game-object">
+                            <!-- 单词宝箱 -->
+                            <div class="w-16 h-12 bg-yellow-600 rounded-lg relative">
+                                <div class="w-16 h-4 bg-yellow-800 absolute top-0 rounded-t-lg"></div>
+                                <div class="w-4 h-4 bg-yellow-900 absolute top-4 left-6 rounded-full"></div>
+                                <div class="w-full text-center text-white text-xs absolute bottom-1">Apple</div>
+                            </div>
+                            <!-- 宝箱阴影 -->
+                            <div class="w-16 h-8 bg-black rounded-full opacity-30 absolute bottom-0 left-0 game-shadow"></div>
+                        </div>
+                        
+                        <div class="absolute top-[50%] right-[30%] w-20 h-20 game-object">
+                            <!-- 小树 -->
+                            <div class="w-16 h-16 bg-green-500 rounded-full relative mx-auto"></div>
+                            <div class="w-4 h-8 bg-brown-600 absolute bottom-0 left-8"></div>
+                            <!-- 树阴影 -->
+                            <div class="w-16 h-8 bg-black rounded-full opacity-30 absolute bottom-0 left-2 game-shadow"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 主角 -->
+                    <div class="absolute bottom-[30%] left-[40%] w-16 h-24 game-character">
+                        <!-- 角色身体 -->
+                        <div class="w-12 h-16 bg-blue-500 rounded-xl mx-auto relative">
+                            <!-- 头部 -->
+                            <div class="w-10 h-10 bg-orange-200 rounded-full absolute -top-8 left-1 border-2 border-blue-600">
+                                <!-- 眼睛 -->
+                                <div class="absolute w-2 h-2 bg-black rounded-full top-3 left-2"></div>
+                                <div class="absolute w-2 h-2 bg-black rounded-full top-3 right-2"></div>
+                                <!-- 嘴巴 -->
+                                <div class="absolute w-4 h-1 bg-red-400 rounded-full bottom-2 left-3"></div>
+                            </div>
+                            <!-- 手臂 -->
+                            <div class="absolute w-3 h-10 bg-blue-500 -left-2 top-2 rounded-full"></div>
+                            <div class="absolute w-3 h-10 bg-blue-500 -right-2 top-2 rounded-full"></div>
+                            <!-- 腿部 -->
+                            <div class="absolute w-4 h-8 bg-blue-700 left-1 bottom-[-8px] rounded-b-xl"></div>
+                            <div class="absolute w-4 h-8 bg-blue-700 right-1 bottom-[-8px] rounded-b-xl"></div>
+                        </div>
+                        <!-- 角色阴影 -->
+                        <div class="w-12 h-6 bg-black rounded-full opacity-30 absolute bottom-[-16px] left-2"></div>
+                        
+                        <!-- 对话气泡 -->
+                        <div class="absolute -top-12 -right-20 bg-white rounded-xl p-2 shadow-lg">
+                            <div class="text-center text-xs font-bold">
+                                Say: "Apple"
+                            </div>
+                            <div class="absolute w-4 h-4 bg-white transform rotate-45 -left-1 bottom-2"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 得分和进度显示 -->
+                    <div class="absolute top-4 left-4 right-4 flex justify-between items-center">
+                        <div class="bg-white bg-opacity-80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-orange-400 flex items-center justify-center border-2 border-white">
+                                <img src="https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?auto=format&fit=crop&q=80&w=2070" alt="玩家头像" class="w-6 h-6 rounded-full object-cover">
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold">小冒险家</div>
+                                <div class="flex items-center">
+                                    <span class="text-[10px] text-yellow-700">词汇星星：</span>
+                                    <span class="text-[10px] font-bold">★ 35</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
+                            <div class="text-xs font-bold">关卡：热带雨林 1-3</div>
+                            <div class="w-32 h-2 bg-gray-200 rounded-full mt-1">
+                                <div class="w-20 h-2 bg-green-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 游戏控制器 -->
+                    <div class="absolute bottom-4 inset-x-4 flex justify-between items-center">
+                        <!-- 左侧：摇杆控制 -->
+                        <div class="joystick-base">
+                            <div class="joystick-handle"></div>
+                </div>
+                
+                        <!-- 右侧：操作按钮 -->
+                        <div class="flex space-x-3">
+                            <!-- 麦克风按钮 -->
+                            <button class="w-16 h-16 rounded-full bg-red-500 shadow-lg flex items-center justify-center border-4 border-red-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                            </button>
+                            
+                            <!-- 交互按钮 -->
+                            <button class="w-16 h-16 rounded-full bg-yellow-500 shadow-lg flex items-center justify-center border-4 border-yellow-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+                            </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html> 

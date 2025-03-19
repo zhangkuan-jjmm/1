@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语塔防冒险：守护者 - 角色选择</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1A2B63, #0A1232);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% {opacity: 0.2;}
+            100% {opacity: 1;}
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 90vh;
+            max-height: 800px;
+            background-color: rgba(26, 43, 99, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            align-items: center;
+        }
+        
+        .nav-button {
+            background-color: rgba(58, 141, 255, 0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-button:hover {
+            background-color: rgba(58, 141, 255, 0.6);
+            transform: scale(1.1);
+        }
+        
+        .nav-button i {
+            font-size: 24px;
+        }
+        
+        /* 角色选择栏 */
+        .character-selector {
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+            padding: 15px;
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+            scroll-behavior: smooth;
+        }
+        
+        .character-selector::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        .character-option {
+            flex: 0 0 auto;
+            width: 90px;
+            height: 110px;
+            background-color: rgba(58, 141, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+        
+        .character-option.selected {
+            border-color: #4CD964;
+            background-color: rgba(58, 141, 255, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .character-option:hover {
+            background-color: rgba(58, 141, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .character-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #3A8DFF;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .warrior-icon {
+            background: linear-gradient(to bottom, #FF9A3A, #FF6B6B);
+        }
+        
+        .mage-icon {
+            background: linear-gradient(to bottom, #C77DFF, #7B68EE);
+        }
+        
+        .archer-icon {
+            background: linear-gradient(to bottom, #4CD964, #32CD32);
+        }
+        
+        .locked-icon {
+            background: #666;
+        }
+        
+        .character-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .warrior-icon::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm3.97 12.41c-1.84 2.17-5.21 2.1-6.96-.07-2.19-2.72-.65-6.72 2.69-7.33.34-.06.63.27.51.6-.46 1.23-.39 2.64.32 3.86a4.49 4.49 0 003.12 2.14c.34.05.49.47.32.8z"/></svg>');
+        }
+        
+        .mage-icon::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 22h20L12 2zm0 9c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1 4h2v5h-2v-5z"/></svg>');
+        }
+        
+        .archer-icon::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 15.5h-1.5V14h-2v4.5H7v-9l1-1 1 1v.5h2v-.5l1-1 1 1v9z"/></svg>');
+        }
+        
+        .locked-icon::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>');
+        }
+        
+        .character-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .character-level {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .locked-text {
+            font-size: 12px;
+            color: #FF6B6B;
+        }
+        
+        /* 角色展示区 */
+        .character-display {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+            min-height: 200px;
+        }
+        
+        .character {
+            position: relative;
+            width: 150px;
+            height: 200px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {transform: translateY(0px) rotate(0deg);}
+            50% {transform: translateY(-10px) rotate(1deg);}
+            100% {transform: translateY(0px) rotate(0deg);}
+        }
+        
+        .character-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(76, 217, 100, 0.6) 0%, rgba(76, 217, 100, 0) 70%);
+            border-radius: 50%;
+        }
+        
+        .warrior .character-body {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 100px;
+            background-color: #FF9A3A;
+            border-radius: 40px 40px 30px 30px;
+        }
+        
+        .mage .character-body {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 110px;
+            background-color: #C77DFF;
+            border-radius: 35px 35px 25px 25px;
+        }
+        
+        .archer .character-body {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 100px;
+            background-color: #4CD964;
+            border-radius: 30px 30px 25px 25px;
+        }
+        
+        .character-head {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background-color: #FFD3A5;
+            border-radius: 50%;
+        }
+        
+        .character-eye {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 20px;
+        }
+        
+        .character-eye-left {
+            left: 12px;
+        }
+        
+        .character-eye-right {
+            right: 12px;
+        }
+        
+        .character-mouth {
+            position: absolute;
+            width: 25px;
+            height: 8px;
+            background-color: #FF6B6B;
+            border-radius: 0 0 15px 15px;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .warrior .character-arm, .mage .character-arm, .archer .character-arm {
+            position: absolute;
+            width: 15px;
+            height: 70px;
+            border-radius: 8px;
+            top: 20px;
+        }
+        
+        .warrior .character-arm {
+            background-color: #FF9A3A;
+        }
+        
+        .mage .character-arm {
+            background-color: #C77DFF;
+        }
+        
+        .archer .character-arm {
+            background-color: #4CD964;
+        }
+        
+        .character-arm-left {
+            left: -10px;
+            transform-origin: top center;
+            animation: wave-left 3s ease-in-out infinite;
+        }
+        
+        .character-arm-right {
+            right: -10px;
+            transform-origin: top center;
+            animation: wave-right 3s ease-in-out infinite;
+        }
+        
+        @keyframes wave-left {
+            0%, 100% {transform: rotate(10deg);}
+            50% {transform: rotate(-5deg);}
+        }
+        
+        @keyframes wave-right {
+            0%, 100% {transform: rotate(-10deg);}
+            50% {transform: rotate(5deg);}
+        }
+        
+        .character-hand {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #FFD3A5;
+            border-radius: 50%;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .warrior .character-leg, .mage .character-leg, .archer .character-leg {
+            position: absolute;
+            width: 20px;
+            height: 50px;
+            border-radius: 8px 8px 12px 12px;
+            bottom: 0;
+        }
+        
+        .warrior .character-leg {
+            background-color: #FF9A3A;
+        }
+        
+        .mage .character-leg {
+            background-color: #C77DFF;
+        }
+        
+        .archer .character-leg {
+            background-color: #4CD964;
+        }
+        
+        .character-leg-left {
+            left: 15px;
+        }
+        
+        .character-leg-right {
+            right: 15px;
+        }
+        
+        .warrior .character-weapon {
+            position: absolute;
+            width: 20px;
+            height: 80px;
+            background-color: #8B4513;
+            border-radius: 5px;
+            bottom: 40px;
+            right: -30px;
+            transform: rotate(15deg);
+        }
+        
+        .warrior .weapon-tip {
+            position: absolute;
+            width: 40px;
+            height: 15px;
+            background-color: #C0C0C0;
+            border-radius: 0 5px 5px 0;
+            top: -10px;
+            left: -10px;
+        }
+        
+        .mage .character-weapon {
+            position: absolute;
+            width: 10px;
+            height: 100px;
+            background-color: #8B4513;
+            border-radius: 5px;
+            bottom: 60px;
+            right: -20px;
+            transform: rotate(15deg);
+        }
+        
+        .mage .weapon-tip {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #7B68EE;
+            border-radius: 50%;
+            top: -15px;
+            left: -7.5px;
+            box-shadow: 0 0 15px #7B68EE;
+            animation: glow 1.5s infinite alternate;
+        }
+        
+        .archer .character-weapon {
+            position: absolute;
+            width: 8px;
+            height: 100px;
+            background-color: #8B4513;
+            border-radius: 5px;
+            bottom: 60px;
+            left: -30px;
+            transform: rotate(-30deg);
+        }
+        
+        .archer .bow-string {
+            position: absolute;
+            width: 2px;
+            height: 90px;
+            background-color: #FFF;
+            top: 5px;
+            left: 15px;
+            border-radius: 5px;
+        }
+        
+        @keyframes glow {
+            0% {opacity: 0.5; box-shadow: 0 0 5px #7B68EE;}
+            100% {opacity: 1; box-shadow: 0 0 20px #7B68EE;}
+        }
+        
+        /* 角色属性区 */
+        .character-stats {
+            padding: 15px;
+            background-color: rgba(10, 18, 50, 0.7);
+            border-radius: 15px;
+            margin: 10px 15px;
+        }
+        
+        .stats-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4CD964;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            width: 48%;
+        }
+        
+        .stat-icon {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+        }
+        
+        .ability-section {
+            margin-top: 15px;
+        }
+        
+        .ability-name {
+            font-weight: bold;
+            color: #FF9A3A;
+            margin-bottom: 5px;
+        }
+        
+        .ability-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        .progress-section {
+            margin-top: 15px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-title {
+            font-size: 14px;
+        }
+        
+        .progress-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #4CD964;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #3A8DFF, #4CD964);
+            border-radius: 5px;
+        }
+        
+        .select-button {
+            background: linear-gradient(to right, #FF9A3A, #FF6B6B);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .select-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transition: all 0.5s ease;
+        }
+        
+        .select-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .select-button:hover::before {
+            left: 100%;
+        }
+        
+        .select-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <button class="nav-button">
+                <span class="icon">←</span>
+            </button>
+            <div style="flex-grow: 1;"></div>
+            <button class="nav-button">
+                <span class="icon">?</span>
+            </button>
+        </div>
+        
+        <!-- 角色选择栏 -->
+        <div class="character-selector" id="characterSelector">
+            <!-- 勇士 -->
+            <div class="character-option selected" data-character="warrior">
+                <div class="character-icon warrior-icon"></div>
+                <div class="character-name">勇士</div>
+                <div class="character-level">Lv.12</div>
+            </div>
+            
+            <!-- 法师 -->
+            <div class="character-option" data-character="mage">
+                <div class="character-icon mage-icon"></div>
+                <div class="character-name">法师</div>
+                <div class="character-level">Lv.8</div>
+            </div>
+            
+            <!-- 射手 -->
+            <div class="character-option" data-character="archer">
+                <div class="character-icon archer-icon"></div>
+                <div class="character-name">射手</div>
+                <div class="character-level">Lv.5</div>
+            </div>
+            
+            <!-- 锁定角色 -->
+            <div class="character-option" data-character="locked">
+                <div class="character-icon locked-icon"></div>
+                <div class="character-name">????</div>
+                <div class="locked-text">锁定</div>
+            </div>
+        </div>
+        
+        <!-- 角色展示区 -->
+        <div class="character-display">
+            <div class="character warrior" id="warriorCharacter">
+                <div class="character-base"></div>
+                <div class="character-body"></div>
+                <div class="character-head">
+                    <div class="character-eye character-eye-left"></div>
+                    <div class="character-eye character-eye-right"></div>
+                    <div class="character-mouth"></div>
+                </div>
+                <div class="character-arm character-arm-left">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-arm character-arm-right">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-leg character-leg-left"></div>
+                <div class="character-leg character-leg-right"></div>
+                <div class="character-weapon">
+                    <div class="weapon-tip"></div>
+                </div>
+            </div>
+            
+            <div class="character mage" id="mageCharacter" style="display: none;">
+                <div class="character-base"></div>
+                <div class="character-body"></div>
+                <div class="character-head">
+                    <div class="character-eye character-eye-left"></div>
+                    <div class="character-eye character-eye-right"></div>
+                    <div class="character-mouth"></div>
+                </div>
+                <div class="character-arm character-arm-left">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-arm character-arm-right">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-leg character-leg-left"></div>
+                <div class="character-leg character-leg-right"></div>
+                <div class="character-weapon">
+                    <div class="weapon-tip"></div>
+                </div>
+            </div>
+            
+            <div class="character archer" id="archerCharacter" style="display: none;">
+                <div class="character-base"></div>
+                <div class="character-body"></div>
+                <div class="character-head">
+                    <div class="character-eye character-eye-left"></div>
+                    <div class="character-eye character-eye-right"></div>
+                    <div class="character-mouth"></div>
+                </div>
+                <div class="character-arm character-arm-left">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-arm character-arm-right">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-leg character-leg-left"></div>
+                <div class="character-leg character-leg-right"></div>
+                <div class="character-weapon">
+                    <div class="bow-string"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 角色属性区 -->
+        <div class="character-stats" id="characterStats">
+            <div class="stats-title">角色属性:</div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-icon">⚔️</div>
+                    <div class="stat-value">攻击力: <span id="attackValue">75</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🛡️</div>
+                    <div class="stat-value">防御力: <span id="defenseValue">45</span></div>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-icon">❤️</div>
+                    <div class="stat-value">生命值: <span id="healthValue">350</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-value">能量上限: <span id="energyValue">120</span></div>
+                </div>
+            </div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value">技能伤害: <span id="skillValue">120</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🏃</div>
+                    <div class="stat-value">移动速度: <span id="speedValue">35</span></div>
+                </div>
+            </div>
+            
+            <div class="ability-section">
+                <div class="stats-title">特殊能力:</div>
+                <div class="ability-name" id="abilityName">雷霆一击</div>
+                <div class="ability-desc" id="abilityDesc">对周围敌人造成范围伤害并击退</div>
+            </div>
+            
+            <div class="progress-section">
+                <div class="stats-title">单词掌握:</div>
+                <div class="progress-label">
+                    <div class="progress-title">初级</div>
+                    <div class="progress-value" id="beginnerValue">85%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%;"></div>
+                </div>
+                
+                <div class="progress-label">
+                    <div class="progress-title">中级</div>
+                    <div class="progress-value" id="intermediateValue">43%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 43%;"></div>
+                </div>
+                
+                <div class="progress-label">
+                    <div class="progress-title">高级</div>
+                    <div class="progress-value" id="advancedValue">12%</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 12%;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 选择按钮 -->
+        <button class="select-button">选择并进入游戏</button>
+    </div>
+
+    <script>
+        // 创建星星背景
+        const stars = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            stars.appendChild(star);
+        }
+        
+        // 角色数据
+        const characterData = {
+            warrior: {
+                name: "勇士",
+                level: 12,
+                attack: 75,
+                defense: 45,
+                health: 350,
+                energy: 120,
+                skillDamage: 120,
+                speed: 35,
+                ability: "雷霆一击",
+                abilityDesc: "对周围敌人造成范围伤害并击退",
+                beginnerWords: 85,
+                intermediateWords: 43,
+                advancedWords: 12
+            },
+            mage: {
+                name: "法师",
+                level: 8,
+                attack: 45,
+                defense: 25,
+                health: 250,
+                energy: 180,
+                skillDamage: 160,
+                speed: 30,
+                ability: "火焰风暴",
+                abilityDesc: "召唤火焰风暴，持续灼烧范围内的敌人",
+                beginnerWords: 75,
+                intermediateWords: 60,
+                advancedWords: 20
+            },
+            archer: {
+                name: "射手",
+                level: 5,
+                attack: 65,
+                defense: 30,
+                health: 280,
+                energy: 100,
+                skillDamage: 110,
+                speed: 45,
+                ability: "箭雨",
+                abilityDesc: "向空中射出多支箭矢，随机落在敌人头上",
+                beginnerWords: 65,
+                intermediateWords: 35,
+                advancedWords: 5
+            }
+        };
+        
+        // 角色选择
+        const characterOptions = document.querySelectorAll('.character-option');
+        const warriorCharacter = document.getElementById('warriorCharacter');
+        const mageCharacter = document.getElementById('mageCharacter');
+        const archerCharacter = document.getElementById('archerCharacter');
+        
+        // 更新角色统计信息
+        function updateCharacterStats(character) {
+            if (character === 'locked') return;
+            
+            const data = characterData[character];
+            
+            document.getElementById('attackValue').textContent = data.attack;
+            document.getElementById('defenseValue').textContent = data.defense;
+            document.getElementById('healthValue').textContent = data.health;
+            document.getElementById('energyValue').textContent = data.energy;
+            document.getElementById('skillValue').textContent = data.skillDamage;
+            document.getElementById('speedValue').textContent = data.speed;
+            
+            document.getElementById('abilityName').textContent = data.ability;
+            document.getElementById('abilityDesc').textContent = data.abilityDesc;
+            
+            document.getElementById('beginnerValue').textContent = data.beginnerWords + '%';
+            document.querySelector('.progress-bar:nth-child(3) .progress-fill').style.width = data.beginnerWords + '%';
+            
+            document.getElementById('intermediateValue').textContent = data.intermediateWords + '%';
+            document.querySelector('.progress-bar:nth-child(5) .progress-fill').style.width = data.intermediateWords + '%';
+            
+            document.getElementById('advancedValue').textContent = data.advancedWords + '%';
+            document.querySelector('.progress-bar:nth-child(7) .progress-fill').style.width = data.advancedWords + '%';
+        }
+        
+        // 显示选中角色
+        function showSelectedCharacter(character) {
+            warriorCharacter.style.display = 'none';
+            mageCharacter.style.display = 'none';
+            archerCharacter.style.display = 'none';
+            
+            if (character === 'warrior') {
+                warriorCharacter.style.display = 'block';
+            } else if (character === 'mage') {
+                mageCharacter.style.display = 'block';
+            } else if (character === 'archer') {
+                archerCharacter.style.display = 'block';
+            }
+        }
+        
+        // 绑定角色选择事件
+        characterOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const character = this.getAttribute('data-character');
+                
+                // 移除所有选中状态
+                characterOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // 添加选中状态
+                this.classList.add('selected');
+                
+                // 显示选中角色
+                showSelectedCharacter(character);
+                
+                // 更新角色统计信息
+                updateCharacterStats(character);
+            });
+        });
+        
+        // 按钮点击效果
+        const buttons = document.querySelectorAll('.select-button, .nav-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

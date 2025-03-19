@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D跑酷游戏 UI/UX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f2ff',
+                        'neon-purple': '#9f00ff',
+                        'deep-dark': '#0a0a12',
+                    },
+                    fontFamily: {
+                        'gaming': ['Orbitron', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .glass-effect {
+            background: rgba(22, 25, 37, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        body {
+            background-color: #0a0a12;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(90, 92, 106, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(128, 0, 255, 0.05) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-deep-dark text-white font-gaming min-h-screen">
+    <div class="p-4 flex flex-wrap gap-8">
+        <!-- 开始页面 MOCKUP - 横屏 -->
+        <div class="w-[640px] h-[360px] border border-gray-700 rounded-xl overflow-hidden relative shadow-xl">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1604871000636-074fa5117945?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-r from-deep-dark via-deep-dark/60 to-transparent"></div>
+            
+            <!-- 内容 -->
+            <div class="relative h-full flex flex-row p-6">
+                <!-- 左侧LOGO区域 -->
+                <div class="flex-1 flex flex-col justify-center">
+                    <div class="text-center">
+                        <h1 class="text-5xl font-bold text-white mb-2 tracking-wider text-shadow">
+                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-neon-blue to-neon-purple">RUNNER X</span>
+                        </h1>
+                        <p class="text-gray-300 text-sm">超越极限的3D跑酷体验</p>
+                    </div>
+                </div>
+                
+                <!-- 右侧按钮区域 -->
+                <div class="flex-1 flex flex-col justify-center">
+                    <div class="space-y-4 w-64 ml-auto">
+                        <button class="glass-effect w-full py-3 rounded-lg text-white font-bold text-lg flex items-center justify-center gap-2 hover:bg-white/10 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            开始游戏
+                        </button>
+                        
+                        <div class="flex gap-3">
+                            <button class="glass-effect flex-1 py-3 rounded-lg text-white font-medium hover:bg-white/10 transition-all">角色</button>
+                            <button class="glass-effect flex-1 py-3 rounded-lg text-white font-medium hover:bg-white/10 transition-all">商店</button>
+                        </div>
+                        
+                        <div class="flex gap-3">
+                            <button class="glass-effect flex-1 py-3 rounded-lg text-white font-medium hover:bg-white/10 transition-all">排行榜</button>
+                            <button class="glass-effect flex-1 py-3 rounded-lg text-white font-medium hover:bg-white/10 transition-all">设置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏主界面 MOCKUP - 横屏 -->
+        <div class="w-[640px] h-[360px] border border-gray-700 rounded-xl overflow-hidden relative shadow-xl">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1604213410393-89f141bb96b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+            </div>
+            
+            <!-- 顶部UI -->
+            <div class="relative p-4">
+                <div class="flex justify-between">
+                    <!-- 分数 -->
+                    <div class="glass-effect px-3 py-1 rounded-full flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                        <span class="font-medium text-sm">24,560</span>
+                    </div>
+                    
+                    <!-- 能量条 -->
+                    <div class="glass-effect px-2 py-1 rounded-full flex items-center w-36">
+                        <div class="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full w-3/4 bg-gradient-to-r from-neon-blue to-neon-purple"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 暂停按钮 -->
+                    <button class="glass-effect p-2 rounded-full hover:bg-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 控制区 - 适应横屏 -->
+            <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-end">
+                <!-- 左侧摇杆控制 -->
+                <div class="relative w-28 h-28">
+                    <div class="absolute inset-0 glass-effect rounded-full opacity-50"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-14 h-14 rounded-full bg-gradient-to-br from-neon-blue to-neon-purple shadow-lg flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-deep-dark/70"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 中间空间 - 游戏视图区 -->
+                <div class="flex-1"></div>
+                
+                <!-- 右侧跳跃按钮 -->
+                <div class="relative">
+                    <button class="w-20 h-20 rounded-full bg-gradient-to-br from-neon-purple to-neon-blue flex items-center justify-center shadow-lg">
+                        <div class="w-16 h-16 rounded-full glass-effect flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 排行榜界面 MOCKUP - 横屏 (继续完成) -->
+        <div class="w-[640px] h-[360px] border border-gray-700 rounded-xl overflow-hidden relative shadow-xl">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+            </div>
+            <div class="absolute inset-0 bg-deep-dark/80"></div>
+            
+            <!-- 内容层 -->
+            <div class="relative h-full flex flex-col p-4">
+                <!-- 顶部导航 -->
+                <div class="flex justify-between items-center mb-4">
+                    <button class="glass-effect p-2 rounded-lg hover:bg-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </button>
+                    <h2 class="text-2xl font-bold text-white">排行榜</h2>
+                    <div class="w-10"></div>
+                </div>
+                
+                <!-- 分类标签 -->
+                <div class="flex gap-2 mb-4">
+                    <button class="glass-effect px-4 py-2 rounded-lg text-sm bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 border border-neon-blue">全球</button>
+                    <button class="glass-effect px-4 py-2 rounded-lg text-sm hover:bg-white/10">好友</button>
+                    <button class="glass-effect px-4 py-2 rounded-lg text-sm hover:bg-white/10">每周</button>
+                    <button class="glass-effect px-4 py-2 rounded-lg text-sm hover:bg-white/10">每月</button>
+                </div>
+                
+                <!-- 排行榜内容 -->
+                <div class="flex-1 flex gap-6">
+                    <!-- 左侧前三名 -->
+                    <div class="w-1/3 flex flex-col justify-center items-center gap-4">
+                        <!-- 第二名 -->
+                        <div class="relative flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-gray-700 border-2 border-gray-500 flex items-center justify-center overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player 2">
+                            </div>
+                            <div class="absolute -top-3 -right-2 w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold">2</div>
+                            <div class="text-sm font-bold mt-1">SkyRacer</div>
+                            <div class="text-xs text-gray-300">92,430分</div>
+                        </div>
+                        
+                        <!-- 第一名 -->
+                        <div class="relative flex flex-col items-center">
+                            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 p-0.5 flex items-center justify-center overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full rounded-full object-cover" alt="Player 1">
+                            </div>
+                            <div class="absolute -top-3 -right-2 w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center text-xs font-bold">1</div>
+                            <div class="text-sm font-bold mt-1">RunnerKing</div>
+                            <div class="text-xs text-gray-300">108,750分</div>
+                            
+                            <div class="w-16 h-5 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg -mt-1 flex items-center justify-center">
+                                <span class="text-xs font-bold">冠军</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 第三名 -->
+                        <div class="relative flex flex-col items-center">
+                            <div class="w-14 h-14 rounded-full bg-gray-700 border-2 border-yellow-700 flex items-center justify-center overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player 3">
+                            </div>
+                            <div class="absolute -top-3 -right-2 w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold">3</div>
+                            <div class="text-sm font-bold mt-1">SpeedDemon</div>
+                            <div class="text-xs text-gray-300">85,110分</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧排行列表 -->
+                    <div class="w-2/3 glass-effect rounded-xl overflow-hidden">
+                        <div class="p-3 bg-gradient-to-r from-deep-dark to-deep-dark/80 flex items-center text-xs font-bold">
+                            <div class="w-10 text-center">名次</div>
+                            <div class="w-10"></div>
+                            <div class="flex-1">玩家</div>
+                            <div class="w-24 text-right">分数</div>
+                        </div>
+                        
+                        <div class="divide-y divide-gray-700/50">
+                            <!-- 当前玩家 -->
+                            <div class="p-3 flex items-center bg-gradient-to-r from-neon-blue/10 to-neon-purple/10">
+                                <div class="w-10 text-center font-bold">8</div>
+                                <div class="w-10">
+                                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="You">
+                                    </div>
+                                </div>
+                                <div class="flex-1 font-bold text-neon-blue">You (SpaceRunner_42)</div>
+                                <div class="w-24 text-right font-bold">76,430</div>
+                            </div>
+                            
+                            <!-- 其他玩家 -->
+                            <div class="p-3 flex items-center">
+                                <div class="w-10 text-center">4</div>
+                                <div class="w-10">
+                                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player 4">
+                                    </div>
+                                </div>
+                                <div class="flex-1">NinjaRun</div>
+                                <div class="w-24 text-right">82,120</div>
+                            </div>
+                            
+                            <div class="p-3 flex items-center">
+                                <div class="w-10 text-center">5</div>
+                                <div class="w-10">
+                                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player 5">
+                                    </div>
+                                </div>
+                                <div class="flex-1">StarJumper</div>
+                                <div class="w-24 text-right">80,540</div>
+                            </div>
+                            
+                            <div class="p-3 flex items-center">
+                                <div class="w-10 text-center">6</div>
+                                <div class="w-10">
+                                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player 6">
+                                    </div>
+                                </div>
+                                <div class="flex-1">GalaxyRunner</div>
+                                <div class="w-24 text-right">78,330</div>
+                            </div>
+                            
+                            <div class="p-3 flex items-center">
+                                <div class="w-10 text-center">7</div>
+                                <div class="w-10">
+                                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player 7">
+                                    </div>
+                                </div>
+                                <div class="flex-1">LightSpeed</div>
+                                <div class="w-24 text-right">77,850</div>
+                            </div>
+                            
+                            <div class="p-3 flex items-center">
+                                <div class="w-10 text-center">9</div>
+                                <div class="w-10">
+                                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player 9">
+                                    </div>
+                                </div>
+                                <div class="flex-1">CyberRunner</div>
+                                <div class="w-24 text-right">73,210</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏结束界面 MOCKUP - 横屏 -->
+        <div class="w-[640px] h-[360px] border border-gray-700 rounded-xl overflow-hidden relative shadow-xl">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1534996858221-380b92700493?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-deep-dark via-deep-dark/70 to-deep-dark/30"></div>
+            
+            <!-- 内容层 -->
+            <div class="relative h-full flex flex-col items-center justify-center p-4">
+                <!-- 结果显示 -->
+                <div class="text-center mb-6">
+                    <h2 class="text-4xl font-bold mb-1 bg-clip-text text-transparent bg-gradient-to-r from-neon-blue to-neon-purple">游戏结束</h2>
+                    <p class="text-sm text-gray-300">挑战结束，但旅程仍在继续</p>
+                </div>
+                
+                <!-- 分数展示 -->
+                <div class="glass-effect rounded-xl p-5 w-96 mb-6">
+                    <div class="flex justify-between mb-3">
+                        <span class="text-sm text-gray-300">最终得分</span>
+                        <span class="text-xl font-bold">85,430</span>
+                    </div>
+                    
+                    <div class="flex justify-between mb-3">
+                        <span class="text-sm text-gray-300">距离</span>
+                        <span class="text-lg">2,358 m</span>
+                    </div>
+                    
+                    <div class="flex justify-between mb-3">
+                        <span class="text-sm text-gray-300">收集硬币</span>
+                        <span class="text-lg">354 <span class="text-xs text-gray-400">+3,540分</span></span>
+                    </div>
+                    
+                    <div class="flex justify-between mb-3">
+                        <span class="text-sm text-gray-300">超越障碍</span>
+                        <span class="text-lg">124 <span class="text-xs text-gray-400">+12,400分</span></span>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-300">排名</span>
+                        <span class="text-lg flex items-center">
+                            <span class="text-neon-blue font-bold mr-1">8</span>
+                            <span class="text-xs text-gray-400">(进步2名)</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- 按钮区域 -->
+                <div class="flex gap-4">
+                    <button class="glass-effect px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        主菜单
+                    </button>
+                    
+                    <button class="bg-gradient-to-r from-neon-blue to-neon-purple px-6 py-3 rounded-lg flex items-center justify-center gap-2 font-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        再来一次
+                    </button>
+                    
+                    <button class="glass-effect px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                        </svg>
+                        分享
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 暂停菜单界面 MOCKUP - 横屏 -->
+        <div class="w-[640px] h-[360px] border border-gray-700 rounded-xl overflow-hidden relative shadow-xl">
+            <div class="absolute inset-0 bg-cover bg-center blur-sm" style="background-image: url('https://images.unsplash.com/photo-1604213410393-89f141bb96b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+            </div>
+            <div class="absolute inset-0 bg-deep-dark/70"></div>
+            
+            <!-- 内容层 -->
+            <div class="relative h-full flex items-center justify-center p-4">
+                <!-- 暂停菜单面板 -->
+                <div class="glass-effect rounded-xl p-6 w-80">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl font-bold mb-1">游戏暂停</h2>
+                        <p class="text-sm text-gray-300">当前得分: 45,230</p>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <button class="w-full bg-gradient-to-r from-neon-blue to-neon-purple py-3 rounded-lg flex items-center justify-center gap-2 font-bold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            继续游戏
+                        </button>
+                        
+                        <button class="w-full glass-effect py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            重新开始
+                        </button>
+                        
+                        <button class="w-full glass-effect py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            游戏设置
+                        </button>
+                        
+                        <button class="w-full glass-effect py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-white/10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            返回主菜单
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

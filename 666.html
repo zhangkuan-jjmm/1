@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语塔防冒险：守护者 - 战斗界面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2C4F7B, #1A2B45);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 90vh;
+            max-height: 800px;
+            background-color: rgba(26, 43, 99, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 顶部状态栏 */
+        .top-status {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: rgba(10, 18, 50, 0.7);
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .status-label {
+            margin-right: 5px;
+        }
+        
+        /* 波次提示条 */
+        .wave-alert {
+            background-color: rgba(255, 106, 106, 0.3);
+            padding: 8px 15px;
+            margin: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid rgba(255, 106, 106, 0.5);
+            font-weight: bold;
+            animation: pulse-alert 2s infinite;
+        }
+        
+        @keyframes pulse-alert {
+            0%, 100% {
+                background-color: rgba(255, 106, 106, 0.3);
+            }
+            50% {
+                background-color: rgba(255, 106, 106, 0.5);
+            }
+        }
+        
+        /* 游戏区域 */
+        .game-area {
+            flex: 1;
+            position: relative;
+            margin: 0 15px;
+            border-radius: 15px;
+            background: radial-gradient(circle, rgba(52, 86, 139, 0.3) 0%, rgba(26, 43, 99, 0.5) 100%);
+            overflow: hidden;
+            border: 1px solid rgba(58, 141, 255, 0.3);
+        }
+        
+        /* 玩家角色 */
+        .player {
+            position: absolute;
+            width: 60px;
+            height: 90px;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .player-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 60px;
+            background-color: #3A8DFF;
+            border-radius: 20px 20px 15px 15px;
+            z-index: 1;
+        }
+        
+        .player-head {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #FFD3A5;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        
+        .player-eye {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 10px;
+        }
+        
+        .player-eye-left {
+            left: 7px;
+        }
+        
+        .player-eye-right {
+            right: 7px;
+        }
+        
+        .player-mouth {
+            position: absolute;
+            width: 12px;
+            height: 5px;
+            background-color: #FF6B6B;
+            border-radius: 0 0 10px 10px;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .player-arm {
+            position: absolute;
+            width: 8px;
+            height: 35px;
+            background-color: #3A8DFF;
+            border-radius: 4px;
+            top: 10px;
+            z-index: 0;
+        }
+        
+        .player-arm-left {
+            left: -3px;
+            transform-origin: top center;
+            animation: swing-left 1.5s ease-in-out infinite;
+        }
+        
+        .player-arm-right {
+            right: -3px;
+            transform-origin: top center;
+            animation: swing-right 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes swing-left {
+            0%, 100% {transform: rotate(15deg);}
+            50% {transform: rotate(0deg);}
+        }
+        
+        @keyframes swing-right {
+            0%, 100% {transform: rotate(-15deg);}
+            50% {transform: rotate(0deg);}
+        }
+        
+        .player-leg {
+            position: absolute;
+            width: 10px;
+            height: 25px;
+            background-color: #3A8DFF;
+            border-radius: 5px;
+            bottom: 0;
+        }
+        
+        .player-leg-left {
+            left: 7px;
+            animation: step-left 0.6s ease-in-out infinite;
+        }
+        
+        .player-leg-right {
+            right: 7px;
+            animation: step-right 0.6s ease-in-out infinite;
+        }
+        
+        @keyframes step-left {
+            0%, 100% {transform: translateY(0);}
+            50% {transform: translateY(-5px);}
+        }
+        
+        @keyframes step-right {
+            0%, 100% {transform: translateY(-5px);}
+            50% {transform: translateY(0);}
+        }
+        
+        .player-weapon {
+            position: absolute;
+            width: 10px;
+            height: 40px;
+            background-color: #C0C0C0;
+            border-radius: 3px;
+            bottom: 40px;
+            right: -10px;
+            transform: rotate(45deg);
+            z-index: 0;
+        }
+        
+        .player-aura {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(76, 217, 100, 0.4) 0%, rgba(76, 217, 100, 0) 70%);
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+            opacity: 0.7;
+            animation: pulse-aura 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-aura {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.2);
+                opacity: 0.4;
+            }
+        }
+        
+        /* 怪物 */
+        .monster {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            z-index: 5;
+            transition: all 0.5s ease;
+        }
+        
+        .monster-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 45px;
+            background-color: #FF6B6B;
+            border-radius: 18px 18px 12px 12px;
+            animation: monster-bounce 1s ease-in-out infinite;
+        }
+        
+        @keyframes monster-bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+        
+        .monster-head {
+            position: absolute;
+            bottom: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 25px;
+            background-color: #FF9A3A;
+            border-radius: 50%;
+        }
+        
+        .monster-eye {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 8px;
+        }
+        
+        .monster-eye-left {
+            left: 5px;
+        }
+        
+        .monster-eye-right {
+            right: 5px;
+        }
+        
+        .monster-arm {
+            position: absolute;
+            width: 8px;
+            height: 25px;
+            background-color: #FF6B6B;
+            border-radius: 4px;
+            top: 8px;
+        }
+        
+        .monster-arm-left {
+            left: -5px;
+            transform: rotate(20deg);
+        }
+        
+        .monster-arm-right {
+            right: -5px;
+            transform: rotate(-20deg);
+        }
+        
+        .monster-leg {
+            position: absolute;
+            width: 8px;
+            height: 15px;
+            background-color: #FF6B6B;
+            border-radius: 4px;
+            bottom: 0;
+        }
+        
+        .monster-leg-left {
+            left: 7px;
+        }
+        
+        .monster-leg-right {
+            right: 7px;
+        }
+        
+        .monster-hp-bar {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .monster-hp-fill {
+            height: 100%;
+            background-color: #FF6B6B;
+            border-radius: 3px;
+            width: 70%;
+        }
+        
+        /* 受击效果 */
+        .hit-effect {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            z-index: 15;
+            animation: hit-expand 0.5s ease-out forwards;
+            display: none;
+        }
+        
+        @keyframes hit-expand {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        /* 技能效果 */
+        .skill-effect {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(58, 141, 255, 0.7) 0%, rgba(58, 141, 255, 0) 70%);
+            z-index: 5;
+            animation: skill-expand 1s ease-out forwards;
+            display: none;
+        }
+        
+        @keyframes skill-expand {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        /* 底部状态条 */
+        .status-bars {
+            padding: 10px 15px;
+            background-color: rgba(10, 18, 50, 0.7);
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .health-section, .energy-section {
+            margin-bottom: 8px;
+        }
+        
+        .health-label, .energy-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .health-bar, .energy-bar {
+            height: 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 7px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(to right, #FF6B6B, #FF9A3A);
+            border-radius: 7px;
+            width: 80%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(to right, #3A8DFF, #4CD964);
+            border-radius: 7px;
+            width: 12%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .energy-warning {
+            font-size: 14px;
+            color: #FF6B6B;
+            font-weight: bold;
+            text-align: right;
+            animation: blink-warning 1s infinite;
+        }
+        
+        @keyframes blink-warning {
+            0%, 100% {opacity: 1;}
+            50% {opacity: 0.5;}
+        }
+        
+        /* 控制按钮 */
+        .control-buttons {
+            display: flex;
+            padding: 10px 15px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .skill-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .skill-button {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #1A2B63, #0A1232);
+            border: 2px solid rgba(58, 141, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .skill-button:active {
+            transform: scale(0.9);
+        }
+        
+        .skill-cooldown {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .pause-button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pause-button:active {
+            transform: scale(0.9);
+        }
+        
+        /* 单词挑战按钮 */
+        .word-challenge-button {
+            display: block;
+            width: calc(100% - 30px);
+            margin: 10px 15px 15px;
+            padding: 15px;
+            background: linear-gradient(to right, #FF9A3A, #FF6B6B);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .word-challenge-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transition: all 0.5s ease;
+        }
+        
+        .word-challenge-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .word-challenge-button:hover::before {
+            left: 100%;
+        }
+        
+        .word-challenge-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 特效元素 */
+        .particles {
+            position: absolute;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 20;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float-away 1s ease-out forwards;
+        }
+        
+        @keyframes float-away {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(360deg) translate(20px, -50px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部状态栏 -->
+        <div class="top-status">
+            <div class="status-item">
+                <span class="status-label">波次:</span>
+                <span id="waveCounter">3/8</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">得分:</span>
+                <span id="scoreCounter">4250</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">时间:</span>
+                <span id="timeCounter">2:45</span>
+            </div>
+        </div>
+        
+        <!-- 波次提示条 -->
+        <div class="wave-alert">
+            <span>[即将出现: 森林蜘蛛 x5]</span>
+        </div>
+        
+        <!-- 游戏区域 -->
+        <div class="game-area" id="gameArea">
+            <!-- 玩家角色 -->
+            <div class="player" id="player">
+                <div class="player-aura"></div>
+                <div class="player-body"></div>
+                <div class="player-head">
+                    <div class="player-eye player-eye-left"></div>
+                    <div class="player-eye player-eye-right"></div>
+                    <div class="player-mouth"></div>
+                </div>
+                <div class="player-arm player-arm-left"></div>
+                <div class="player-arm player-arm-right"></div>
+                <div class="player-leg player-leg-left"></div>
+                <div class="player-leg player-leg-right"></div>
+                <div class="player-weapon"></div>
+            </div>
+            
+            <!-- 怪物将在JS中动态生成 -->
+            
+            <!-- 特效容器 -->
+            <div class="particles" id="particles"></div>
+        </div>
+        
+        <!-- 底部状态条 -->
+        <div class="status-bars">
+            <div class="health-section">
+                <div class="health-label">
+                    <div>❤️ <span id="healthValue">280</span>/350</div>
+                </div>
+                <div class="health-bar">
+                    <div class="health-fill" id="healthFill"></div>
+                </div>
+            </div>
+            
+            <div class="energy-section">
+                <div class="energy-label">
+                    <div>⚡ <span id="energyValue">15</span>/120</div>
+                    <div class="energy-warning">警告：能量不足！</div>
+                </div>
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energyFill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 控制按钮 -->
+        <div class="control-buttons">
+            <div class="skill-buttons">
+                <div class="skill-button" id="skill1">
+                    🔥
+                    <div class="skill-cooldown" id="skill1Cooldown"></div>
+                </div>
+                <div class="skill-button" id="skill2">
+                    ⚡
+                    <div class="skill-cooldown" id="skill2Cooldown"></div>
+                </div>
+                <div class="skill-button" id="skill3">
+                    🌪️
+                    <div class="skill-cooldown" id="skill3Cooldown"></div>
+                </div>
+            </div>
+            
+            <div class="pause-button" id="pauseButton">
+                ⏸️
+            </div>
+        </div>
+        
+        <!-- 单词挑战按钮 -->
+        <button class="word-challenge-button" id="wordChallengeButton">
+            单词挑战按钮 - 点击获取能量!
+        </button>
+    </div>
+
+    <script>
+        // 游戏区域
+        const gameArea = document.getElementById('gameArea');
+        const player = document.getElementById('player');
+        const particles = document.getElementById('particles');
+        
+        // 状态计数器
+        const healthValue = document.getElementById('healthValue');
+        const energyValue = document.getElementById('energyValue');
+        const healthFill = document.getElementById('healthFill');
+        const energyFill = document.getElementById('energyFill');
+        const timeCounter = document.getElementById('timeCounter');
+        
+        // 技能按钮
+        const skill1 = document.getElementById('skill1');
+        const skill2 = document.getElementById('skill2');
+        const skill3 = document.getElementById('skill3');
+        const skill1Cooldown = document.getElementById('skill1Cooldown');
+        const skill2Cooldown = document.getElementById('skill2Cooldown');
+        const skill3Cooldown = document.getElementById('skill3Cooldown');
+        
+        // 单词挑战按钮
+        const wordChallengeButton = document.getElementById('wordChallengeButton');
+        
+        // 游戏状态
+        let gameState = {
+            playerHealth: 280,
+            playerMaxHealth: 350,
+            playerEnergy: 15,
+            playerMaxEnergy: 120,
+            gameTime: 165, // 2:45 in seconds
+            isMoving: false,
+            lastEnergyDrain: Date.now(),
+            monsters: []
+        };
+        
+        // 初始化怪物
+        function createMonster(x, y) {
+            const monster = document.createElement('div');
+            monster.className = 'monster';
+            monster.style.left = `${x}%`;
+            monster.style.top = `${y}%`;
+            
+            const id = 'monster' + Math.floor(Math.random() * 10000);
+            monster.id = id;
+            
+            monster.innerHTML = `
+                <div class="monster-body"></div>
+                <div class="monster-head">
+                    <div class="monster-eye monster-eye-left"></div>
+                    <div class="monster-eye monster-eye-right"></div>
+                </div>
+                <div class="monster-arm monster-arm-left"></div>
+                <div class="monster-arm monster-arm-right"></div>
+                <div class="monster-leg monster-leg-left"></div>
+                <div class="monster-leg monster-leg-right"></div>
+                <div class="monster-hp-bar">
+                    <div class="monster-hp-fill"></div>
+                </div>
+            `;
+            
+            gameArea.appendChild(monster);
+            
+            // 添加到怪物数组
+            gameState.monsters.push({
+                id: id,
+                element: monster,
+                health: 100,
+                x: x,
+                y: y,
+                targetX: 50, // 目标是玩家位置
+                targetY: 50,
+                speed: 0.5 + Math.random() * 1, // 随机速度
+                lastMove: Date.now()
+            });
+            
+            return monster;
+        }
+        
+        // 初始创建几个怪物
+        createMonster(20, 20);
+        createMonster(80, 20);
+        createMonster(30, 40);
+        createMonster(70, 60);
+        createMonster(50, 30);
+        
+        // 移动玩家
+        function movePlayer(e) {
+            if (!gameState.isMoving) return;
+            
+            const rect = gameArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const leftPercent = (x / rect.width) * 100;
+            const topPercent = (y / rect.height) * 100;
+            
+            // 限制在游戏区域内
+            const boundedLeft = Math.max(10, Math.min(90, leftPercent));
+            const boundedTop = Math.max(10, Math.min(90, topPercent));
+            
+            player.style.left = `${boundedLeft}%`;
+            player.style.top = `${boundedTop}%`;
+            
+            // 移动会消耗能量
+            if (Date.now() - gameState.lastEnergyDrain > 200) {
+                decreaseEnergy(0.5);
+                gameState.lastEnergyDrain = Date.now();
+            }
+        }
+        
+        // 启动移动
+        gameArea.addEventListener('mousedown', () => {
+            if (gameState.playerEnergy > 0) {
+                gameState.isMoving = true;
+            }
+        });
+        
+        // 移动中
+        gameArea.addEventListener('mousemove', movePlayer);
+        
+        // 停止移动
+        gameArea.addEventListener('mouseup', () => {
+            gameState.isMoving = false;
+        });
+        
+        gameArea.addEventListener('mouseleave', () => {
+            gameState.isMoving = false;
+        });
+        
+        // 怪物自动移动
+        function moveMonsters() {
+            gameState.monsters.forEach(monster => {
+                if (Date.now() - monster.lastMove > 100) {
+                    // 计算向玩家的方向
+                    const playerRect = player.getBoundingClientRect();
+                    const gameAreaRect = gameArea.getBoundingClientRect();
+                    
+                    const playerX = ((playerRect.left + playerRect.width/2) - gameAreaRect.left) / gameAreaRect.width * 100;
+                    const playerY = ((playerRect.top + playerRect.height/2) - gameAreaRect.top) / gameAreaRect.height * 100;
+                    
+                    // 更新目标位置
+                    monster.targetX = playerX;
+                    monster.targetY = playerY;
+                    
+                    // 计算移动方向
+                    const dx = monster.targetX - monster.x;
+                    const dy = monster.targetY - monster.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance > 5) {  // 如果距离较远，则移动
+                        monster.x += (dx / distance) * monster.speed;
+                        monster.y += (dy / distance) * monster.speed;
+                        
+                        monster.element.style.left = `${monster.x}%`;
+                        monster.element.style.top = `${monster.y}%`;
+                    } else {
+                        // 如果足够近，怪物攻击玩家
+                        if (Math.random() < 0.05) {  // 5%几率攻击
+                            decreaseHealth(5);
+                            createHitEffect(playerRect.left - gameAreaRect.left + playerRect.width/2, 
+                                          playerRect.top - gameAreaRect.top + playerRect.height/2);
+                        }
+                    }
+                    
+                    monster.lastMove = Date.now();
+                }
+            });
+            
+            requestAnimationFrame(moveMonsters);
+        }
+        
+        moveMonsters();
+        
+        // 技能使用
+        skill1.addEventListener('click', () => {
+            if (gameState.playerEnergy >= 20 && !skill1.classList.contains('cooldown')) {
+                // 火焰技能
+                decreaseEnergy(20);
+                createSkillEffect(1);
+                
+                // 对周围怪物造成伤害
+                damageNearbyMonsters(50);
+                
+                // 设置冷却
+                setCooldown(skill1, skill1Cooldown, 3);
+            }
+        });
+        
+        skill2.addEventListener('click', () => {
+            if (gameState.playerEnergy >= 30 && !skill2.classList.contains('cooldown')) {
+                // 闪电技能
+                decreaseEnergy(30);
+                createSkillEffect(2);
+                
+                // 对周围怪物造成伤害
+                damageNearbyMonsters(80);
+                
+                // 设置冷却
+                setCooldown(skill2, skill2Cooldown, 5);
+            }
+        });
+        
+        skill3.addEventListener('click', () => {
+            if (gameState.playerEnergy >= 40 && !skill3.classList.contains('cooldown')) {
+                // 风暴技能
+                decreaseEnergy(40);
+                createSkillEffect(3);
+                
+                // 对所有怪物造成伤害
+                damageAllMonsters(60);
+                
+                // 设置冷却
+                setCooldown(skill3, skill3Cooldown, 8);
+            }
+        });
+        
+        // 设置技能冷却
+        function setCooldown(skillElement, cooldownElement, seconds) {
+            skillElement.classList.add('cooldown');
+            cooldownElement.style.display = 'flex';
+            
+            let remaining = seconds;
+            cooldownElement.textContent = remaining;
+            
+            const interval = setInterval(() => {
+                remaining--;
+                cooldownElement.textContent = remaining;
+                
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    skillElement.classList.remove('cooldown');
+                    cooldownElement.style.display = 'none';
+                }
+            }, 1000);
+        }
+        
+        // 创建技能效果
+        function createSkillEffect(skillType) {
+            const effect = document.createElement('div');
+            effect.className = 'skill-effect';
+            
+            const playerRect = player.getBoundingClientRect();
+            const gameAreaRect = gameArea.getBoundingClientRect();
+            
+            const centerX = playerRect.left - gameAreaRect.left + playerRect.width/2;
+            const centerY = playerRect.top - gameAreaRect.top + playerRect.height/2;
+            
+            effect.style.left = `${centerX - 60}px`;
+            effect.style.top = `${centerY - 60}px`;
+            
+            if (skillType === 1) {
+                effect.style.background = 'radial-gradient(circle, rgba(255, 106, 106, 0.7) 0%, rgba(255, 106, 106, 0) 70%)';
+            } else if (skillType === 2) {
+                effect.style.background = 'radial-gradient(circle, rgba(76, 217, 100, 0.7) 0%, rgba(76, 217, 100, 0) 70%)';
+            } else if (skillType === 3) {
+                effect.style.background = 'radial-gradient(circle, rgba(58, 141, 255, 0.7) 0%, rgba(58, 141, 255, 0) 70%)';
+            }
+            
+            effect.style.display = 'block';
+            gameArea.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 1000);
+        }
+        
+        // 创建攻击特效
+        function createHitEffect(x, y) {
+            const effect = document.createElement('div');
+            effect.className = 'hit-effect';
+            effect.style.left = `${x - 15}px`;
+            effect.style.top = `${y - 15}px`;
+            effect.style.display = 'block';
+            gameArea.appendChild(effect);
+            
+            setTimeout(() => {
+                effect.remove();
+            }, 500);
+        }
+        
+        // 伤害附近怪物
+        function damageNearbyMonsters(damage) {
+            const playerRect = player.getBoundingClientRect();
+            const gameAreaRect = gameArea.getBoundingClientRect();
+            
+            const playerX = ((playerRect.left + playerRect.width/2) - gameAreaRect.left) / gameAreaRect.width * 100;
+            const playerY = ((playerRect.top + playerRect.height/2) - gameAreaRect.top) / gameAreaRect.height * 100;
+            
+            gameState.monsters.forEach(monster => {
+                const dx = monster.x - playerX;
+                const dy = monster.y - playerY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 30) {  // 30%范围内的怪物受伤
+                    damageMonster(monster, damage);
+                    createParticles(monster.element);
+                }
+            });
+        }
+        
+        // 伤害所有怪物
+        function damageAllMonsters(damage) {
+            gameState.monsters.forEach(monster => {
+                damageMonster(monster, damage);
+                createParticles(monster.element);
+            });
+        }
+        
+        // 伤害单个怪物
+        function damageMonster(monster, damage) {
+            monster.health -= damage;
+            
+            // 更新血条
+            const hpFill = monster.element.querySelector('.monster-hp-fill');
+            hpFill.style.width = `${Math.max(0, monster.health)}%`;
+            
+            if (monster.health <= 0) {
+                monster.element.style.opacity = '0';
+                setTimeout(() => {
+                    monster.element.remove();
+                }, 500);
+                
+                // 从数组中移除
+                const index = gameState.monsters.findIndex(m => m.id === monster.id);
+                if (index !== -1) {
+                    gameState.monsters.splice(index, 1);
+                }
+                
+                // 随机生成新怪物
+                setTimeout(() => {
+                    const x = Math.random() < 0.5 ? Math.random() * 20 : 80 + Math.random() * 20;
+                    const y = Math.random() < 0.5 ? Math.random() * 20 : 80 + Math.random() * 20;
+                    createMonster(x, y);
+                }, 2000);
+            }
+        }
+        
+        // 创建粒子效果
+        function createParticles(targetElement) {
+            const rect = targetElement.getBoundingClientRect();
+            const gameAreaRect = gameArea.getBoundingClientRect();
+            
+            const centerX = rect.left - gameAreaRect.left + rect.width/2;
+            const centerY = rect.top - gameAreaRect.top + rect.height/2;
+            
+            // 创建多个粒子
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // 随机颜色
+                const colors = ['#FF6B6B', '#4CD964', '#3A8DFF', '#FFD700'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // 随机大小
+                const size = 5 + Math.random() * 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // 位置
+                particle.style.left = `${centerX}px`;
+                particle.style.top = `${centerY}px`;
+                
+                // 随机动画延迟
+                particle.style.animationDelay = `${Math.random() * 0.2}s`;
+                
+                particles.appendChild(particle);
+                
+                // 粒子生命周期结束后移除
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+        
+        // 减少生命值
+        function decreaseHealth(amount) {
+            gameState.playerHealth = Math.max(0, gameState.playerHealth - amount);
+            healthValue.textContent = gameState.playerHealth;
+            
+            // 更新血条
+            const percentage = (gameState.playerHealth / gameState.playerMaxHealth) * 100;
+            healthFill.style.width = `${percentage}%`;
+            
+            // 检查游戏结束
+            if (gameState.playerHealth <= 0) {
+                // 游戏结束逻辑
+                alert('游戏结束！');
+            }
+        }
+        
+        // 减少能量值
+        function decreaseEnergy(amount) {
+            gameState.playerEnergy = Math.max(0, gameState.playerEnergy - amount);
+            energyValue.textContent = gameState.playerEnergy;
+            
+            // 更新能量条
+            const percentage = (gameState.playerEnergy / gameState.playerMaxEnergy) * 100;
+            energyFill.style.width = `${percentage}%`;
+            
+            // 检查能量不足
+            if (gameState.playerEnergy <= 10) {
+                // 能量不足时减速
+                player.style.transition = 'all 0.5s ease';
+                document.querySelector('.energy-warning').style.display = 'block';
+            } else {
+                player.style.transition = 'all 0.3s ease';
+                document.querySelector('.energy-warning').style.display = 'none';
+            }
+        }
+        
+        // 增加能量值
+        function increaseEnergy(amount) {
+            gameState.playerEnergy = Math.min(gameState.playerMaxEnergy, gameState.playerEnergy + amount);
+            energyValue.textContent = gameState.playerEnergy;
+            
+            // 更新能量条
+            const percentage = (gameState.playerEnergy / gameState.playerMaxEnergy) * 100;
+            energyFill.style.width = `${percentage}%`;
+            
+            // 更新能量警告显示
+            if (gameState.playerEnergy > 10) {
+                document.querySelector('.energy-warning').style.display = 'none';
+            }
+        }
+        
+        // 单词挑战按钮
+        wordChallengeButton.addEventListener('click', () => {
+            // 模拟打开单词挑战界面
+            if (confirm('准备开始单词挑战！\n请读出单词"MOUNTAIN"来获取30点能量！')) {
+                // 模拟用户正确读出单词
+                increaseEnergy(30);
+                
+                // 创建能量获取效果
+                const playerRect = player.getBoundingClientRect();
+                const gameAreaRect = gameArea.getBoundingClientRect();
+                
+                const playerCenterX = playerRect.left - gameAreaRect.left + playerRect.width/2;
+                const playerCenterY = playerRect.top - gameAreaRect.top + playerRect.height/2;
+                
+                // 创建一个特殊效果
+                const energyEffect = document.createElement('div');
+                energyEffect.className = 'skill-effect';
+                energyEffect.style.background = 'radial-gradient(circle, rgba(255, 215, 0, 0.7) 0%, rgba(255, 215, 0, 0) 70%)';
+                energyEffect.style.left = `${playerCenterX - 60}px`;
+                energyEffect.style.top = `${playerCenterY - 60}px`;
+                energyEffect.style.display = 'block';
+                gameArea.appendChild(energyEffect);
+                
+                setTimeout(() => {
+                    energyEffect.remove();
+                }, 1000);
+            }
+        });
+        
+        // 自动减少能量
+        setInterval(() => {
+            // 每秒减少3点能量
+            decreaseEnergy(3);
+        }, 1000);
+        
+        // 更新游戏时间
+        function updateGameTime() {
+            if (gameState.gameTime > 0) {
+                gameState.gameTime--;
+                
+                // 格式化时间
+                const minutes = Math.floor(gameState.gameTime / 60);
+                const seconds = gameState.gameTime % 60;
+                timeCounter.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                setTimeout(updateGameTime, 1000);
+            } else {
+                // 时间结束逻辑
+                alert('时间结束！');
+            }
+        }
+        
+        // 开始游戏时间更新
+        updateGameTime();
+        
+        // 暂停按钮
+        const pauseButton = document.getElementById('pauseButton');
+        
+        pauseButton.addEventListener('click', () => {
+            // 简单的暂停实现，实际游戏中会有更复杂的暂停菜单
+            if (pauseButton.textContent === '⏸️') {
+                pauseButton.textContent = '▶️';
+                alert('游戏已暂停');
+            } else {
+                pauseButton.textContent = '⏸️';
+            }
+        });
+        
+        // 自动攻击的功能
+        function autoAttack() {
+            if (gameState.playerEnergy > 5) {
+                // 寻找最近的怪物
+                let closestMonster = null;
+                let minDistance = Infinity;
+                
+                const playerRect = player.getBoundingClientRect();
+                const gameAreaRect = gameArea.getBoundingClientRect();
+                
+                const playerX = ((playerRect.left + playerRect.width/2) - gameAreaRect.left) / gameAreaRect.width * 100;
+                const playerY = ((playerRect.top + playerRect.height/2) - gameAreaRect.top) / gameAreaRect.height * 100;
+                
+                gameState.monsters.forEach(monster => {
+                    const dx = monster.x - playerX;
+                    const dy = monster.y - playerY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestMonster = monster;
+                    }
+                });
+                
+                // 如果有怪物在攻击范围内
+                if (closestMonster && minDistance < 40) {
+                    // 消耗能量
+                    decreaseEnergy(1);
+                    
+                    // 创建子弹效果
+                    const bullet = document.createElement('div');
+                    bullet.className = 'particle';
+                    bullet.style.backgroundColor = '#FFD700';
+                    bullet.style.width = '8px';
+                    bullet.style.height = '8px';
+                    
+                    const playerCenterX = playerRect.left - gameAreaRect.left + playerRect.width/2;
+                    const playerCenterY = playerRect.top - gameAreaRect.top + playerRect.height/2;
+                    
+                    bullet.style.left = `${playerCenterX}px`;
+                    bullet.style.top = `${playerCenterY}px`;
+                    
+                    // 自定义动画，朝向目标怪物
+                    const monsterRect = closestMonster.element.getBoundingClientRect();
+                    const monsterCenterX = monsterRect.left - gameAreaRect.left + monsterRect.width/2;
+                    const monsterCenterY = monsterRect.top - gameAreaRect.top + monsterRect.height/2;
+                    
+                    particles.appendChild(bullet);
+                    
+                    // 移动子弹到怪物位置
+                    bullet.animate([
+                        { left: `${playerCenterX}px`, top: `${playerCenterY}px` },
+                        { left: `${monsterCenterX}px`, top: `${monsterCenterY}px` }
+                    ], {
+                        duration: 300,
+                        easing: 'ease-out',
+                        fill: 'forwards'
+                    });
+                    
+                    // 子弹击中后移除
+                    setTimeout(() => {
+                        bullet.remove();
+                        
+                        // 对怪物造成伤害
+                        damageMonster(closestMonster, 10);
+                        createHitEffect(monsterCenterX, monsterCenterY);
+                    }, 300);
+                }
+            }
+            
+            // 每秒检查一次自动攻击
+            setTimeout(autoAttack, 1000);
+        }
+        
+        // 开始自动攻击
+        autoAttack();
+        
+        // 设置初始状态
+        healthFill.style.width = `${(gameState.playerHealth / gameState.playerMaxHealth) * 100}%`;
+        energyFill.style.width = `${(gameState.playerEnergy / gameState.playerMaxEnergy) * 100}%`;
+        
+        // 如果能量低于阈值，显示警告
+        if (gameState.playerEnergy <= 10) {
+            document.querySelector('.energy-warning').style.display = 'block';
+        } else {
+            document.querySelector('.energy-warning').style.display = 'none';
+        }
+        
+        // 响应式调整
+        window.addEventListener('resize', () => {
+            // 重新计算位置等
+            gameState.monsters.forEach(monster => {
+                // 更新怪物位置
+                monster.element.style.left = `${monster.x}%`;
+                monster.element.style.top = `${monster.y}%`;
+            });
+        });
+    </script>
+</body>
+</html>

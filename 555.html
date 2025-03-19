@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能家居控制中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#121212',
+                        darker: '#0a0a0a',
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#ec4899',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card {
+            background: rgba(40, 40, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen">
+    <div class="p-8 flex flex-wrap gap-8">
+        <!-- 页面预览框架：登录页 -->
+        <div class="border border-gray-700 rounded-lg p-4 w-[400px]">
+            <div class="text-sm text-gray-400 mb-2">登录页</div>
+            
+            <!-- 登录页内容 -->
+            <div class="h-[600px] relative overflow-hidden rounded-lg bg-gradient-to-br from-darker to-dark">
+                <div class="absolute inset-0 opacity-20">
+                    <img src="https://images.unsplash.com/photo-1558002038-648f69a0c484" class="w-full h-full object-cover" alt="背景">
+                </div>
+                
+                <div class="relative h-full flex flex-col justify-center items-center p-8">
+                    <div class="glass-card rounded-2xl p-8 w-full max-w-sm">
+                        <div class="text-center mb-6">
+                            <div class="inline-block p-3 rounded-full bg-gradient-to-r from-primary to-secondary mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">智能家居中心</h2>
+                            <p class="text-gray-400 mt-1">登录您的智能家居控制账户</p>
+                        </div>
+                        
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-1">电子邮箱</label>
+                                <input type="email" class="w-full px-4 py-2 rounded-lg glass border-0 focus:ring-2 focus:ring-primary focus:outline-none bg-opacity-50 text-white" placeholder="your@email.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-1">密码</label>
+                                <input type="password" class="w-full px-4 py-2 rounded-lg glass border-0 focus:ring-2 focus:ring-primary focus:outline-none bg-opacity-50 text-white" placeholder="••••••••">
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="rounded text-primary focus:ring-primary mr-2">
+                                    <span class="text-gray-400">记住我</span>
+                                </div>
+                                <a href="#" class="text-primary hover:text-secondary">忘记密码?</a>
+                            </div>
+                            <button class="w-full py-2 px-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium hover:from-primary/90 hover:to-secondary/90 transition-all">
+                                登录
+                            </button>
+                        </form>
+                        
+                        <div class="mt-6 text-center text-sm">
+                            <span class="text-gray-400">还没有账户?</span>
+                            <a href="#" class="text-primary hover:text-secondary font-medium ml-1">注册</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 页面预览框架：控制中心仪表盘 -->
+        <div class="border border-gray-700 rounded-lg p-4 w-[700px]">
+            <div class="text-sm text-gray-400 mb-2">控制中心仪表盘</div>
+            
+            <!-- 仪表盘内容 -->
+            <div class="h-[600px] rounded-lg bg-darker overflow-hidden">
+                <!-- 侧边导航栏 -->
+                <div class="flex h-full">
+                    <div class="glass w-20 h-full flex flex-col items-center py-6 border-r border-gray-800">
+                        <div class="bg-gradient-to-r from-primary to-secondary p-2 rounded-xl mb-8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                        </div>
+                        
+                        <nav class="flex flex-col items-center space-y-6 flex-1">
+                            <a href="#" class="p-2 rounded-xl bg-primary/20 text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                </svg>
+                            </a>
+                            <a href="#" class="p-2 rounded-xl text-gray-500 hover:bg-gray-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                            </a>
+                            <a href="#" class="p-2 rounded-xl text-gray-500 hover:bg-gray-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </a>
+                            <a href="#" class="p-2 rounded-xl text-gray-500 hover:bg-gray-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </a>
+                        </nav>
+                        
+                        <div class="mt-auto">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+                                <span class="text-white font-medium">YL</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 主内容区域 -->
+                    <div class="flex-1 p-6 overflow-hidden">
+                        <div class="flex justify-between items-center mb-8">
+                            <div>
+                                <h1 class="text-2xl font-bold text-white">控制中心</h1>
+                                <p class="text-gray-400">早上好，杨丽</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="glass p-2 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                </div>
+                                <div class="glass-card px-3 py-1 rounded-full flex items-center space-x-2">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+                                    <span class="text-sm text-gray-300">全部在线</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 统计卡片行 -->
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="glass-card rounded-2xl p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="text-gray-400 text-sm">能源使用</p>
+                                        <h3 class="text-2xl font-bold text-white">4.2 kWh</h3>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-green-500/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="text-green-500 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                        </svg>
+                                        12%
+                                    </span>
+                                    <span class="text-gray-400 ml-2">比上周节省</span>
+                                </div>
+                            </div>
+                            
+                            <div class="glass-card rounded-2xl p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="text-gray-400 text-sm">活跃设备</p>
+                                        <h3 class="text-2xl font-bold text-white">12/16</h3>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-primary/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-700/30 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="glass-card rounded-2xl p-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="text-gray-400 text-sm">当前温度</p>
+                                        <h3 class="text-2xl font-bold text-white">24°C</h3>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-yellow-500/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-sm">
+                                    <span class="text-gray-400">舒适区间</span>
+                                    <span class="text-white ml-2">21°C - 26°C</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 快速访问区 -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-lg font-semibold text-white">快速访问</h2>
+                                <button class="text-primary text-sm">查看全部</button>
+                            </div>
+                            
+                            <div class="grid grid-cols-4 gap-4">
+                                <div class="glass-card rounded-xl p-4 text-center cursor-pointer hover:bg-gray-800/50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center mx-auto mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-300">所有灯光</div>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4 text-center cursor-pointer hover:bg-gray-800/50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-500 flex items-center justify-center mx-auto mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-300">空调</div>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4 text-center cursor-pointer hover:bg-gray-800/50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-500 flex items-center justify-center mx-auto mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-300">日程</div>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4 text-center cursor-pointer hover:bg-gray-800/50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center mx-auto mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-300">安全</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 设备状态 -->
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-lg font-semibold text-white">设备状态</h2>
+                                <div class="flex items-center gap-2">
+                                    <button class="glass px-3 py-1 rounded-lg text-sm text-gray-300 flex items-center gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                                        </svg>
+                                        筛选
+                                    </button>
+                                    <button class="text-primary text-sm">查看全部</button>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="glass-card rounded-xl p-4 flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-white">客厅灯光</h3>
+                                            <p class="text-xs text-gray-400">已开启 3 小时</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4 flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-white">空调</h3>
+                                            <p class="text-xs text-gray-400">24°C · 制冷模式</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4 flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-white">主卧窗帘</h3>
+                                            <p class="text-xs text-gray-400">已关闭</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4 flex justify-between items-center">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-white">门禁系统</h3>
+                                            <p class="text-xs text-gray-400">已锁定</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

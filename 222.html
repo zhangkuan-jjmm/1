@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语塔防冒险：守护者 - 主菜单</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1A2B63, #0A1232);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% {opacity: 0.2;}
+            100% {opacity: 1;}
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 90vh;
+            max-height: 800px;
+            background-color: rgba(26, 43, 99, 0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            align-items: center;
+        }
+        
+        .nav-button {
+            background-color: rgba(58, 141, 255, 0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-button:hover {
+            background-color: rgba(58, 141, 255, 0.6);
+            transform: scale(1.1);
+        }
+        
+        .nav-button i {
+            font-size: 24px;
+        }
+        
+        /* 角色展示区 */
+        .character-display {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .character {
+            position: relative;
+            width: 200px;
+            height: 250px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {transform: translateY(0px) rotate(0deg);}
+            50% {transform: translateY(-10px) rotate(1deg);}
+            100% {transform: translateY(0px) rotate(0deg);}
+        }
+        
+        .character-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(76, 217, 100, 0.6) 0%, rgba(76, 217, 100, 0) 70%);
+            border-radius: 50%;
+        }
+        
+        .character-body {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 120px;
+            background-color: #3A8DFF;
+            border-radius: 40px 40px 30px 30px;
+        }
+        
+        .character-head {
+            position: absolute;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 70px;
+            background-color: #FFD3A5;
+            border-radius: 50%;
+        }
+        
+        .character-eye {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 25px;
+        }
+        
+        .character-eye-left {
+            left: 15px;
+        }
+        
+        .character-eye-right {
+            right: 15px;
+        }
+        
+        .character-mouth {
+            position: absolute;
+            width: 30px;
+            height: 10px;
+            background-color: #FF6B6B;
+            border-radius: 0 0 15px 15px;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .character-arm {
+            position: absolute;
+            width: 20px;
+            height: 80px;
+            background-color: #3A8DFF;
+            border-radius: 10px;
+            top: 30px;
+        }
+        
+        .character-arm-left {
+            left: -15px;
+            transform-origin: top center;
+            animation: wave-left 3s ease-in-out infinite;
+        }
+        
+        .character-arm-right {
+            right: -15px;
+            transform-origin: top center;
+            animation: wave-right 3s ease-in-out infinite;
+        }
+        
+        @keyframes wave-left {
+            0%, 100% {transform: rotate(10deg);}
+            50% {transform: rotate(-5deg);}
+        }
+        
+        @keyframes wave-right {
+            0%, 100% {transform: rotate(-10deg);}
+            50% {transform: rotate(5deg);}
+        }
+        
+        .character-hand {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #FFD3A5;
+            border-radius: 50%;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .character-leg {
+            position: absolute;
+            width: 25px;
+            height: 60px;
+            background-color: #3A8DFF;
+            border-radius: 10px 10px 15px 15px;
+            bottom: 0;
+        }
+        
+        .character-leg-left {
+            left: 15px;
+        }
+        
+        .character-leg-right {
+            right: 15px;
+        }
+        
+        .character-weapon {
+            position: absolute;
+            width: 15px;
+            height: 100px;
+            background-color: #8B4513;
+            border-radius: 5px;
+            bottom: 80px;
+            right: -30px;
+            transform: rotate(15deg);
+        }
+        
+        .weapon-tip {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px #FFD700;
+            animation: glow 1.5s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% {opacity: 0.5; box-shadow: 0 0 5px #FFD700;}
+            100% {opacity: 1; box-shadow: 0 0 20px #FFD700;}
+        }
+        
+        .magic-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float-up 3s ease-out infinite;
+        }
+        
+        @keyframes float-up {
+            0% {transform: translateY(0) scale(0); opacity: 0;}
+            20% {opacity: 1;}
+            80% {opacity: 0.5;}
+            100% {transform: translateY(-100px) scale(1); opacity: 0;}
+        }
+        
+        /* 菜单按钮区 */
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .menu-button {
+            background: linear-gradient(to right, #3A8DFF, #4CD964);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transition: all 0.5s ease;
+        }
+        
+        .menu-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .menu-button:hover::before {
+            left: 100%;
+        }
+        
+        .menu-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 玩家信息区 */
+        .player-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: rgba(10, 18, 50, 0.7);
+            border-radius: 15px;
+            margin: 10px 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .info-icon {
+            width: 24px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        /* 图标字体 */
+        .icon {
+            display: inline-block;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <div class="top-nav">
+            <button class="nav-button">
+                <span class="icon">⚙️</span>
+            </button>
+            <div style="flex-grow: 1;"></div>
+            <button class="nav-button">
+                <span class="icon">🛒</span>
+            </button>
+            <button class="nav-button" style="margin-left: 10px;">
+                <span class="icon">👤</span>
+            </button>
+        </div>
+        
+        <!-- 角色展示区 -->
+        <div class="character-display">
+            <div class="magic-particles" id="particles"></div>
+            <div class="character">
+                <div class="character-base"></div>
+                <div class="character-body"></div>
+                <div class="character-head">
+                    <div class="character-eye character-eye-left"></div>
+                    <div class="character-eye character-eye-right"></div>
+                    <div class="character-mouth"></div>
+                </div>
+                <div class="character-arm character-arm-left">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-arm character-arm-right">
+                    <div class="character-hand"></div>
+                </div>
+                <div class="character-leg character-leg-left"></div>
+                <div class="character-leg character-leg-right"></div>
+                <div class="character-weapon">
+                    <div class="weapon-tip"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 菜单按钮区 -->
+        <div class="menu-buttons">
+            <button class="menu-button">开始冒险</button>
+            <button class="menu-button">角色强化</button>
+            <button class="menu-button">单词图鉴</button>
+            <button class="menu-button">排行榜</button>
+        </div>
+        
+        <!-- 玩家信息区 -->
+        <div class="player-info">
+            <div class="info-item">
+                <div class="info-icon">⚡</div>
+                <div class="info-value">850</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">💰</div>
+                <div class="info-value">1240</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon">⭐</div>
+                <div class="info-value">15</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 创建星星背景
+        const stars = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            stars.appendChild(star);
+        }
+        
+        // 创建魔法粒子效果
+        const particles = document.getElementById('particles');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // 随机位置和大小
+            const size = Math.random() * 6 + 4;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = Math.random() * 20 + '%';
+            
+            // 随机颜色
+            const colors = ['#4CD964', '#3A8DFF', '#C77DFF', '#FFD700'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.backgroundColor = randomColor;
+            
+            // 随机动画延迟和持续时间
+            const duration = Math.random() * 2 + 2;
+            const delay = Math.random() * 2;
+            particle.style.animation = `float-up ${duration}s ease-out ${delay}s infinite`;
+            
+            particles.appendChild(particle);
+            
+            // 粒子生命周期结束后移除
+            setTimeout(() => {
+                particle.remove();
+            }, (duration + delay) * 1000);
+        }
+        
+        // 定期创建新粒子
+        setInterval(createParticle, 300);
+        
+        // 初始创建多个粒子
+        for (let i = 0; i < 10; i++) {
+            createParticle();
+        }
+        
+        // 按钮点击效果
+        const buttons = document.querySelectorAll('.menu-button, .nav-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>

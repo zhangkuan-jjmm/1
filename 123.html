@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏品管理</title>
+    <style>
+        /* 全局样式 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* 页面预览布局 */
+        .app-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .page {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #FF9A8B, #FF6A88, #FF99AC);
+        }
+        
+        .page-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6A82FB, #FC5C7D);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* 物品列表样式 */
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .item-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            background: #f1f1f1;
+        }
+        
+        .item-info {
+            padding: 10px;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .item-meta {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 分类选择器 */
+        .category-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .category-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #F093FB, #F5576C);
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-badge:hover, .category-badge.active {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+        
+        /* 统计面板样式 */
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .stat-value.highlight {
+            background: linear-gradient(90deg, #FF9A8B, #FF6A88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            height: 200px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>我的收藏品管理</h1>
+        
+        <div class="app-preview">
+            <!-- 添加收藏品页面 -->
+            <div class="page">
+                <h2 class="page-title">添加新收藏品</h2>
+                
+                <form id="add-item-form">
+                    <div class="form-group">
+                        <label for="item-image">上传图片</label>
+                        <input type="file" id="item-image" accept="image/*">
+                        <div id="image-preview" style="margin-top: 10px; height: 120px; background: #f1f1f1; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span id="preview-placeholder">预览区域</span>
+                            <img id="preview-image" style="max-height: 100%; max-width: 100%; display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-name">名称</label>
+                        <input type="text" id="item-name" placeholder="输入收藏品名称" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-category">分类</label>
+                        <select id="item-category" required>
+                            <option value="">请选择分类</option>
+                            <option value="玩具">玩具</option>
+                            <option value="书籍">书籍</option>
+                            <option value="游戏">游戏</option>
+                            <option value="模型">模型</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-price">价格 (¥)</label>
+                        <input type="number" id="item-price" min="0" step="0.01" placeholder="输入价格" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-quantity">数量</label>
+                        <input type="number" id="item-quantity" min="1" value="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item-description">描述 (可选)</label>
+                        <textarea id="item-description" rows="3" placeholder="关于这个收藏品的补充信息..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">保存收藏品</button>
+                </form>
+            </div>
+            
+            <!-- 收藏品列表页面 -->
+            <div class="page">
+                <h2 class="page-title">我的收藏品</h2>
+                
+                <div class="category-filter">
+                    <div class="category-badge active" data-category="all">全部</div>
+                    <div class="category-badge" data-category="玩具">玩具</div>
+                    <div class="category-badge" data-category="书籍">书籍</div>
+                    <div class="category-badge" data-category="游戏">游戏</div>
+                    <div class="category-badge" data-category="模型">模型</div>
+                    <div class="category-badge" data-category="其他">其他</div>
+                </div>
+                
+                <div class="item-list" id="items-container">
+                    <!-- 示例物品卡片 -->
+                    <div class="item-card" data-category="玩具">
+                        <div class="item-image" style="background-image: url('https://via.placeholder.com/150'); background-size: cover;"></div>
+                        <div class="item-info">
+                            <div class="item-name">乐高积木</div>
+                            <div class="item-meta">¥299 × 2</div>
+                            <div class="item-meta">分类: 玩具</div>
+                        </div>
+                    </div>
+                    
+                    <div class="item-card" data-category="书籍">
+                        <div class="item-image" style="background-image: url('https://via.placeholder.com/150'); background-size: cover;"></div>
+                        <div class="item-info">
+                            <div class="item-name">设计模式</div>
+                            <div class="item-meta">¥88 × 1</div>
+                            <div class="item-meta">分类: 书籍</div>
+                        </div>
+                    </div>
+                    
+                    <div class="item-card" data-category="游戏">
+                        <div class="item-image" style="background-image: url('https://via.placeholder.com/150'); background-size: cover;"></div>
+                        <div class="item-info">
+                            <div class="item-name">塞尔达传说</div>
+                            <div class="item-meta">¥350 × 1</div>
+                            <div class="item-meta">分类: 游戏</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 统计分析页面 -->
+            <div class="page">
+                <h2 class="page-title">收藏统计</h2>
+                
+                <div class="stat-cards">
+                    <div class="stat-card">
+                        <div class="stat-title">收藏品总数</div>
+                        <div class="stat-value highlight">24</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">总价值</div>
+                        <div class="stat-value highlight">¥5,678</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">收藏品分类占比</div>
+                        <div id="category-chart" class="chart-container">
+                            <!-- 这里将通过JS绘制图表 -->
+                            <svg width="100%" height="100%" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#eee" stroke-width="20" />
+                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#FF9A8B" stroke-width="20" stroke-dasharray="50 100" />
+                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#FF6A88" stroke-width="20" stroke-dasharray="30 100" stroke-dashoffset="-50" />
+                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#FF99AC" stroke-width="20" stroke-dasharray="15 100" stroke-dashoffset="-80" />
+                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#6A82FB" stroke-width="20" stroke-dasharray="5 100" stroke-dashoffset="-95" />
+                            </svg>
+                        </div>
+                        <div style="display: flex; justify-content: space-around; margin-top: 10px; font-size: 12px;">
+                            <div><span style="display: inline-block; width: 10px; height: 10px; background: #FF9A8B; border-radius: 50%;"></span> 玩具 (50%)</div>
+                            <div><span style="display: inline-block; width: 10px; height: 10px; background: #FF6A88; border-radius: 50%;"></span> 书籍 (30%)</div>
+                            <div><span style="display: inline-block; width: 10px; height: 10px; background: #FF99AC; border-radius: 50%;"></span> 游戏 (15%)</div>
+                            <div><span style="display: inline-block; width: 10px; height: 10px; background: #6A82FB; border-radius: 50%;"></span> 其他 (5%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">最近添加的收藏品</div>
+                        <div style="font-size: 14px; margin-top: 10px;">
+                            <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee;">
+                                <span>塞尔达传说</span>
+                                <span>¥350</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee;">
+                                <span>乐高积木</span>
+                                <span>¥299</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                                <span>设计模式</span>
+                                <span>¥88</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 图片预览功能
+        document.getElementById('item-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewImage = document.getElementById('preview-image');
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                    document.getElementById('preview-placeholder').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // 表单提交处理
+        document.getElementById('add-item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 这里是模拟保存数据的功能
+            const name = document.getElementById('item-name').value;
+            const category = document.getElementById('item-category').value;
+            const price = document.getElementById('item-price').value;
+            const quantity = document.getElementById('item-quantity').value;
+            
+            alert(`成功添加收藏品: ${name} (分类: ${category}, 价格: ¥${price}, 数量: ${quantity})`);
+            
+            // 重置表单
+            document.getElementById('add-item-form').reset();
+            document.getElementById('preview-image').style.display = 'none';
+            document.getElementById('preview-placeholder').style.display = 'block';
+        });
+        
+        // 分类筛选功能
+        const categoryBadges = document.querySelectorAll('.category-badge');
+        categoryBadges.forEach(badge => {
+            badge.addEventListener('click', function() {
+                // 移除所有active类
+                categoryBadges.forEach(b => b.classList.remove('active'));
+                // 添加当前active类
+                this.classList.add('active');
+                
+                const selectedCategory = this.getAttribute('data-category');
+                const itemCards = document.querySelectorAll('.item-card');
+                
+                itemCards.forEach(card => {
+                    if (selectedCategory === 'all' || card.getAttribute('data-category') === selectedCategory) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
