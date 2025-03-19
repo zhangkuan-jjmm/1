@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物品管理应用</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .mockup-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        .phone-mockup {
+            width: 360px;
+            height: 720px;
+            border-radius: 30px;
+            padding: 10px;
+            background: #1e1e1e;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+    <div class="mockup-container">
+        <!-- 登录页面 -->
+        <div class="phone-mockup">
+            <div class="phone-screen bg-gradient-to-br from-gray-900 to-gray-800">
+                <div class="flex flex-col items-center justify-center h-full p-8">
+                    <div class="mb-10">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                            </svg>
+                        </div>
+                        <h1 class="text-3xl font-bold text-center text-white">物品管家</h1>
+                        <p class="text-center text-gray-400">简单高效的物品管理应用</p>
+                    </div>
+                    
+                    <div class="w-full space-y-4">
+                        <div class="glass-effect rounded-xl p-4">
+                            <input type="text" placeholder="用户名/邮箱" class="w-full bg-transparent border-b border-gray-600 py-2 focus:outline-none focus:border-blue-500 text-white placeholder-gray-500">
+                        </div>
+                        
+                        <div class="glass-effect rounded-xl p-4">
+                            <input type="password" placeholder="密码" class="w-full bg-transparent border-b border-gray-600 py-2 focus:outline-none focus:border-blue-500 text-white placeholder-gray-500">
+                        </div>
+                        
+                        <button class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg">
+                            登 录
+                        </button>
+                        
+                        <div class="flex justify-between text-sm text-gray-400 mt-4">
+                            <a href="#" class="hover:text-blue-500">忘记密码?</a>
+                            <a href="#" class="hover:text-blue-500">注册账号</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-5 w-full text-center text-gray-500 text-sm">登录页面</div>
+        </div>
+        
+        <!-- 主页/仪表盘 -->
+        <div class="phone-mockup">
+            <div class="phone-screen bg-gradient-to-br from-gray-900 to-gray-800">
+                <div class="h-full flex flex-col">
+                    <!-- 顶部导航 -->
+                    <div class="glass-effect p-4 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-500 flex items-center justify-center mr-3">
+                                <span class="text-white font-bold">李</span>
+                            </div>
+                            <span class="text-white">李明</span>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button class="w-8 h-8 flex items-center justify-center rounded-full glass-effect">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded-full glass-effect">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 搜索栏 -->
+                    <div class="px-4 pt-6 pb-4">
+                        <div class="glass-effect rounded-xl p-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <input type="text" placeholder="搜索物品..." class="bg-transparent w-full focus:outline-none text-white">
+                        </div>
+                    </div>
+                    
+                    <!-- 统计卡片 -->
+                    <div class="px-4 pb-6">
+                        <div class="glass-effect rounded-xl p-4">
+                            <h2 class="text-lg font-semibold text-white mb-4">物品统计</h2>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-500">128</div>
+                                    <div class="text-xs text-gray-400">总物品</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-purple-500">12</div>
+                                    <div class="text-xs text-gray-400">分类</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-green-500">32</div>
+                                    <div class="text-xs text-gray-400">最近添加</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 快速访问分类 -->
+                    <div class="px-4 pb-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <h2 class="text-lg font-semibold text-white">常用分类</h2>
+                            <a href="#" class="text-xs text-blue-400">查看全部</a>
+                        </div>
+                        <div class="flex space-x-3 overflow-x-auto pb-2" style="scrollbar-width: none;">
+                            <div class="glass-effect rounded-xl p-3 flex flex-col items-center min-w-[80px]">
+                                <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs text-center text-white">电子产品</span>
+                            </div>
+                            <div class="glass-effect rounded-xl p-3 flex flex-col items-center min-w-[80px]">
+                                <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs text-center text-white">书籍</span>
+                            </div>
+                            <div class="glass-effect rounded-xl p-3 flex flex-col items-center min-w-[80px]">
+                                <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs text-center text-white">收藏品</span>
+                            </div>
+                            <div class="glass-effect rounded-xl p-3 flex flex-col items-center min-w-[80px]">
+                                <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                    </svg>
+                                </div>
+                                <span class="text-xs text-center text-white">服装</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 最近添加物品 -->
+                    <div class="px-4 pb-4 flex-grow">
+                        <div class="flex justify-between items-center mb-3">
+                            <h2 class="text-lg font-semibold text-white">最近添加</h2>
+                            <a href="#" class="text-xs text-blue-400">查看全部</a>
+                        </div>
+                        <div class="space-y-3 overflow-hidden">
+                            <div class="glass-effect rounded-xl p-3 flex items-center">
+                                <div class="w-12 h-12 rounded-lg bg-cover bg-center mr-3" style="background-image: url('https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWFjYm9va3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60')"></div>
+                                <div class="flex-grow">
+                                    <h3 class="text-sm font-medium text-white">MacBook Pro 2021</h3>
+                                    <p class="text-xs text-gray-400">电子产品・2023/10/28</p>
+                                </div>
+                                <div class="text-sm font-semibold text-blue-400">¥12,999</div>
+                            </div>
+                            <div class="glass-effect rounded-xl p-3 flex items-center">
+                                <div class="w-12 h-12 rounded-lg bg-cover bg-center mr-3" style="background-image: url('https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGVhZHBob25lc3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60')"></div>
+                                <div class="flex-grow">
+                                    <h3 class="text-sm font-medium text-white">索尼 WH-1000XM4</h3>
+                                    <p class="text-xs text-gray-400">电子产品・2023/10/25</p>
+                                </div>
+                                <div class="text-sm font-semibold text-blue-400">¥2,399</div>
+                            </div>
+                            <div class="glass-effect rounded-xl p-3 flex items-center">
+                                <div class="w-12 h-12 rounded-lg bg-cover bg-center mr-3" style="background-image: url('https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Ym9va3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60')"></div>
+                                <div class="flex-grow">
+                                    <h3 class="text-sm font-medium text-white">原子习惯</h3>
+                                    <p class="text-xs text-gray-400">书籍・2023/10/20</p>
+                                </div>
+                                <div class="text-sm font-semibold text-blue-400">¥59</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 底部导航 -->
+                    <div class="glass-effect p-2 flex justify-around items-center">
+                        <button class="w-16 flex flex-col items-center py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span class="text-xs text-blue-500 mt-1">首页</span>
+                        </button>
+                        <button class="w-16 flex flex-col items-center py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                            </svg>
+                            <span class="text-xs text-gray-500 mt-1">分类</span>
+                        </button>
+                        <button class="w-16 flex flex-col items-center py-1 relative">
+                            <div class="absolute -top-5 w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </div>
+                            <span class="text-xs text-transparent mt-10">添加</span>
+                        </button>
+                        <button class="w-16 flex flex-col items-center py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <span class="text-xs text-gray-500 mt-1">统计</span>
+                        </button>
+                        <button class="w-16 flex flex-col items-center py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="text-xs text-gray-500 mt-1">我的</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-5 w-full text-center text-gray-500 text-sm">主页/仪表盘</div>
+        </div>
+    </div>
+</body>
+</html>
